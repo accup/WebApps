@@ -1,42 +1,3 @@
-/**
- * @param {HTMLCanvasElement} resizableCanvas 
- * @param {(cvs: HTMLCanvasElement) => any} onAfterCallback
- */
-function setResizable (resizableCanvas, onAfterCallback) {
-	let cvs = resizableCanvas;
-	let ctx = resizableCanvas.getContext('2d');
-
-	// リサイズ処理
-	let resizingTimer = 0;
-	function onResize (e) {
-		if (0 != resizingTimer) {
-			clearTimeout(resizingTimer);
-		}
-		resizingTimer = setTimeout(function () {
-			resizingTimer = 0;
-			previousImage = ctx.getImageData(0, 0, cvs.width, cvs.height);
-			cvs.width = document.body.clientWidth;
-			cvs.height = document.body.clientHeight;
-			onAfterCallback(resizableCanvas);
-		}, 100);
-	}
-	onResize();
-	window.addEventListener('resize', onResize);
-}
-
-function hitsCircle (x, y, r, px, py) {
-	let dx = px - x;
-	let dy = py - y;
-
-	return (dx * dx + dy * dy <= r * r);
-}
-function hitsTriangle (x, y, w, h, px, py) {
-	let dx = px - x;
-	let dy = py - y;
-
-	return (0 <= dy && dy <= h && 2 * Math.abs(dx) * h <= w * dy);
-}
-
 window.addEventListener('load', e => {
 	let squareSize = 32;
 	let halfSquareSize = squareSize / 2;
@@ -73,146 +34,95 @@ window.addEventListener('load', e => {
 	});
 
 	let trees = [
-		{
-			x: 5, y: 1,
-			selected: false,
-			root: {
-				type: "circle",
-				left: null,
-				right: null
-			}
-		},
-		{
-			x: 6, y: 1,
-			selected: false,
-			root: {
-				type: "triangle",
-				level: 1
-			}
-		},
-		{
-			x: 7, y: 1,
-			selected: false,
-			root: {
-				type: "triangle",
-				level: 2
-			}
-		},
-		{
-			x: 8, y: 1,
-			selected: false,
-			root: {
-				type: "triangle",
-				level: 3
-			}
-		},
-		{
-			x: 2, y: 1,
-			selected: false,
-			root: {
-				type: "circle",
-				left: {
-					type: "circle",
-					left: null,
-					right: null			
-				},
-				right: null
-			}
-		},
-		{
-			x: 1, y: 4,
-			selected: false,
-			root: {
-				type: "circle",
-				left: null,
-				right: {
-					type: "circle",
-					left: null,
-					right: null			
-				}
-			}
-		},
-		{
-			x: 10, y: 1,
-			selected: false,
-			root: {
-				type: "circle",
-				left: {
-					type: "triangle",
-					level: 1
-				},
-				right: null
-			}
-		},
-		{
-			x: 11, y: 1,
-			selected: false,
-			root: {
-				type: "circle",
-				left: null,
-				right: {
-					type: "triangle",
-					level: 1
-				}
-			}
-		},
-		{
-			x: 14, y: 1,
-			selected: false,
-			root: {
-				type: "circle",
-				left: {
-					type: "triangle",
-					level: 2
-				},
-				right: null
-			}
-		},
-		{
-			x: 15, y: 1,
-			selected: false,
-			root: {
-				type: "circle",
-				left: null,
-				right: {
-					type: "triangle",
-					level: 2
-				}
-			}
-		},
-		{
-			x: 18, y: 1,
-			selected: false,
-			root: {
-				type: "circle",
-				left: {
-					type: "triangle",
-					level: 3
-				},
-				right: null
-			}
-		},
-		{
-			x: 19, y: 1,
-			selected: false,
-			root: {
-				type: "circle",
-				left: null,
-				right: {
-					type: "triangle",
-					level: 3
-				}
-			}
-		}
+		new Tree(
+			5, 1,
+			new Circle(null, null)
+		),
+		new Tree(
+			6, 1,
+			new Triangle(1)
+		),
+		new Tree(
+			7, 1,
+			new Triangle(2)
+		),
+		new Tree(
+			8, 1,
+			new Triangle(3)
+		),
+		new Tree(
+			2, 1,
+			new Circle(
+				new Circle(null, null),
+				null
+			)
+		),
+		new Tree(
+			1, 4,
+			new Circle(
+				null,
+				new Circle(null, null)
+			)
+		),
+		new Tree(
+			10, 1,
+			new Circle(
+				new Triangle(1),
+				null
+			)
+		),
+		new Tree(
+			11, 1,
+			new Circle(
+				null,
+				new Triangle(1)
+			)
+		),
+		new Tree(
+			14, 1,
+			new Circle(
+				new Triangle(2),
+				null
+			)
+		),
+		new Tree(
+			15, 1,
+			new Circle(
+				null,
+				new Triangle(2)
+			)
+		),
+		new Tree(
+			18, 1,
+			new Circle(
+				new Triangle(3),
+				null
+			)
+		),
+		new Tree(
+			19, 1,
+			new Circle(
+				null,
+				new Triangle(3)
+			)
+		)
 	];
 
 	let PIOver4 = Math.PI / 4;
+
+	/**
+	 * 
+	 * @param {number} x 
+	 * @param {number} y 
+	 * @param {Node} node 
+	 * @param {number} px 
+	 * @param {number} py 
+	 * @param {boolean} isLeft 
+	 */
 	function renderNode (x, y, node, px, py, isLeft) {
 		if (null === node) return;
 
-
-		switch (node.type) {
-		case "circle":
+		if (node instanceof Circle) {
 			if (null !== px) {
 				work_ctx.moveTo(px, py);
 				work_ctx.lineTo(x + (isLeft ? squareJoint : -squareJoint), y - squareJoint);
@@ -224,8 +134,7 @@ window.addEventListener('load', e => {
 			}
 			renderNode(x - squareSize, y + squareSize, node.left, x - squareJoint, y + squareJoint, true);
 			renderNode(x + squareSize, y + squareSize, node.right, x + squareJoint, y + squareJoint, false);
-			break;
-		case "triangle":
+		} else if (node instanceof Triangle) {
 			if (null !== px) {
 				work_ctx.moveTo(px, py);
 				work_ctx.lineTo(x, y);
@@ -234,7 +143,6 @@ window.addEventListener('load', e => {
 			work_ctx.lineTo(x - halfSquareSize, y + node.level * squareSize);
 			work_ctx.lineTo(x + halfSquareSize, y + node.level * squareSize);
 			work_ctx.closePath();
-			break;
 		}
 	}
 	function render () {
@@ -261,19 +169,34 @@ window.addEventListener('load', e => {
 
 	setInterval(render, 1000 / 100);
 
+	/**
+	 * 
+	 * @param {number} x 
+	 * @param {number} y 
+	 * @param {Node} node 
+	 * @param {number} px 
+	 * @param {number} py 
+	 */
 	function hitsNode (x, y, node, px, py) {
 		if (null == node) return null;
 
-		switch (node.type) {
-		case "circle":
-			if (hitsCircle(x, y, halfSquareSize, px, py)) return node;
+		if (node instanceof Circle) {
+			if (hitsCircle(x, y, halfSquareSize, px, py)) {
+				return node;
+			}
 			return hitsNode(x - squareSize, y + squareSize, node.left, px, py) || hitsNode(x + squareSize, y + squareSize, node.right, px, py);
-		case "triangle":
-			if (hitsTriangle(x, y, squareSize, node.level * squareSize, px, py)) return node;
-			break;
+		} else if (node instanceof Triangle) {
+			if (hitsTriangle(x, y, squareSize, node.level * squareSize, px, py)) {
+				return node;
+			}
 		}
 		return null;
 	}
+	/**
+	 * 
+	 * @param {number} px 
+	 * @param {number} py 
+	 */
 	function hits (px, py) {
 		for (let i=0, n=trees.length; i<n; ++i) {
 			let tree = trees[i];
@@ -288,7 +211,7 @@ window.addEventListener('load', e => {
 	let sx = 0, sy = 0;
 	let startX = 0, startY = 0;
 	/**
-	 * @param {TouchEvent | MouseEvent} e 
+	 * @param {EventPoint} e 
 	 */
 	function onMoveStart(e) {
 		moving = true;
@@ -311,7 +234,7 @@ window.addEventListener('load', e => {
 	}
 
 	/**
-	 * @param {TouchEvent | MouseEvent} e 
+	 * @param {EventPoint} e 
 	 */
 	function onMove(e) {
 		let x = e.offsetX, y = e.offsetY;
@@ -332,7 +255,7 @@ window.addEventListener('load', e => {
 	}
 
 	/**
-	 * @param {TouchEvent | MouseEvent} e 
+	 * @param {EventPoint} e 
 	 */
 	function onMoveEnd(e) {
 		moving = false;
@@ -343,13 +266,46 @@ window.addEventListener('load', e => {
 		}
 	}
 
-	work.addEventListener('mousedown', onMoveStart);
-	work.addEventListener('touchstart', onMoveStart);
+	function wrapMouseListener (listener) {
+		return e => {
+			e.preventDefault();
 
-	work.addEventListener('mousemove', onMove);
-	work.addEventListener('touchmove', onMove);
+			let p = new EventPoint;
+			p.clientX = e.clientX;
+			p.clientY = e.clientY;
+			p.screenX = e.screenX;
+			p.screenY = e.screenY;
+			p.offsetX = e.offsetX;
+			p.offsetY = e.offsetY;
+			listener(p);
+		};
+	}
 
-	work.addEventListener('mouseup', onMoveEnd);
-	work.addEventListener('touchcancel', onMoveEnd);
-	work.addEventListener('touchend', onMoveEnd);
+	function wrapTouchListener (listener) {
+		return e => {
+			e.preventDefault();
+
+			let t = e.changedTouches[0];
+
+			let p = new EventPoint;
+			p.clientX = t.clientX;
+			p.clientY = t.clientY;
+			p.screenX = t.screenX;
+			p.screenY = t.screenY;
+			let r = e.currentTarget.getBoundingClientRect();
+			p.offsetX = p.clientX - r.left;
+			p.offsetY = p.clientY - r.top;
+			listener(p);
+		};
+	}
+
+	work.addEventListener('mousedown', wrapMouseListener(onMoveStart));
+	work.addEventListener('touchstart', wrapTouchListener(onMoveStart));
+
+	work.addEventListener('mousemove', wrapMouseListener(onMove));
+	work.addEventListener('touchmove', wrapTouchListener(onMove));
+
+	work.addEventListener('mouseup', wrapMouseListener(onMoveEnd));
+	work.addEventListener('touchcancel', wrapTouchListener(onMoveEnd));
+	work.addEventListener('touchend', wrapTouchListener(onMoveEnd));
 });
