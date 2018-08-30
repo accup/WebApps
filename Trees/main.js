@@ -114,7 +114,7 @@ window.addEventListener('load', e => {
 	 * 
 	 * @param {number} x 
 	 * @param {number} y 
-	 * @param {Node} node 
+	 * @param {TreeNode} node 
 	 * @param {number} px 
 	 * @param {number} py 
 	 * @param {boolean} isLeft 
@@ -173,7 +173,7 @@ window.addEventListener('load', e => {
 	 * 
 	 * @param {number} x 
 	 * @param {number} y 
-	 * @param {Node} node 
+	 * @param {TreeNode} node 
 	 * @param {number} px 
 	 * @param {number} py 
 	 */
@@ -221,7 +221,7 @@ window.addEventListener('load', e => {
 		let tree = hits(x, y);
 		if (null != tree) {
 			if (e.ctrlKey) {
-				tree = JSON.parse(JSON.stringify(tree));
+				tree = tree.clone();
 				trees.push(tree);
 			}
 			tree.selected = true;
@@ -270,14 +270,7 @@ window.addEventListener('load', e => {
 		return e => {
 			e.preventDefault();
 
-			let p = new EventPoint;
-			p.clientX = e.clientX;
-			p.clientY = e.clientY;
-			p.screenX = e.screenX;
-			p.screenY = e.screenY;
-			p.offsetX = e.offsetX;
-			p.offsetY = e.offsetY;
-			listener(p);
+			listener(EventPoint.fromMouseEvent(e));
 		};
 	}
 
@@ -285,17 +278,7 @@ window.addEventListener('load', e => {
 		return e => {
 			e.preventDefault();
 
-			let t = e.changedTouches[0];
-
-			let p = new EventPoint;
-			p.clientX = t.clientX;
-			p.clientY = t.clientY;
-			p.screenX = t.screenX;
-			p.screenY = t.screenY;
-			let r = e.currentTarget.getBoundingClientRect();
-			p.offsetX = p.clientX - r.left;
-			p.offsetY = p.clientY - r.top;
-			listener(p);
+			listener(EventPoint.fromTouchEvent(e));
 		};
 	}
 

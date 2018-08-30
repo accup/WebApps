@@ -32,6 +32,57 @@ class EventPoint {
 		this.offsetY = 0;
 		this.screenX = 0;
 		this.screenY = 0;
+		this.pageX = 0;
+		this.pageY = 0;
+
+		this.ctrlKey = false;
+		this.altKey = false;
+		this.shiftKey = false;
+		this.metaKey = false;
+	}
+
+	/**
+	 * @param {MouseEvent} e 
+	 */
+	static fromMouseEvent(e) {
+		let p = new EventPoint;
+
+		p.clientX = e.clientX;
+		p.clientY = e.clientY;
+		p.screenX = e.screenX;
+		p.screenY = e.screenY;
+		p.offsetX = e.offsetX;
+		p.offsetY = e.offsetY;
+		p.pageX = e.pageX;
+		p.pageY = e.pageY;
+
+		p.ctrlKey = e.ctrlKey;
+		p.altKey = e.altKey;
+		p.shiftKey = e.shiftKey;
+		p.metaKey = e.metaKey;
+		return p;
+	}
+
+	/**
+	 * @param {TouchEvent} e 
+	 */
+	static fromTouchEvent(e) {
+		let t = e.changedTouches[0];
+
+		let p = new EventPoint;
+		p.clientX = t.clientX;
+		p.clientY = t.clientY;
+		p.screenX = t.screenX;
+		p.screenY = t.screenY;
+		let r = e.currentTarget.getBoundingClientRect();
+		p.offsetX = p.clientX - r.left;
+		p.offsetY = p.clientY - r.top;
+
+		p.ctrlKey = e.ctrlKey;
+		p.altKey = e.altKey;
+		p.shiftKey = e.shiftKey;
+		p.metaKey = e.metaKey;
+		return p;
 	}
 }
 
@@ -63,16 +114,19 @@ function hitsTriangle (x, y, w, h, px, py) {
 	return (0 <= dy && dy <= h && 2 * Math.abs(dx) * h <= w * dy);
 }
 
-
-class Node {
+class TreeNode {
 	constructor () {}
+
+	clone () {
+		return new TreeNode();
+	}
 }
 
-class Circle extends Node {
+class Circle extends TreeNode {
 	/**
 	 * 
-	 * @param {Node} left 
-	 * @param {Node} right 
+	 * @param {TreeNode} left 
+	 * @param {TreeNode} right 
 	 */
 	constructor (left, right) {
 		super();
@@ -80,9 +134,16 @@ class Circle extends Node {
 		this.left = left;
 		this.right = right;
 	}
+
+	clone () {
+		return new Circle (
+			null == this.left ? null : this.left.clone(),
+			null == this.right ? null : this.right.clone()
+		);
+	}
 }
 
-class Triangle extends Node {
+class Triangle extends TreeNode {
 	/**
 	 * 
 	 * @param {number} level 
@@ -92,6 +153,10 @@ class Triangle extends Node {
 
 		this.level = level;
 	}
+
+	clone () {
+		return new Triangle (this.level);
+	}
 }
 
 class Tree {
@@ -99,12 +164,16 @@ class Tree {
 	 * 
 	 * @param {number} x 
 	 * @param {number} y 
-	 * @param {Node} root 
+	 * @param {TreeNode} root 
 	 */
 	constructor (x, y, root)  {
 		this.x = x;
 		this.y = y;
 		this.selected = false;
 		this.root = root;
+	}
+
+	clone () {
+		return new Tree(this.x, this.y, this.root.clone());
 	}
 }
