@@ -167,7 +167,11 @@ window.addEventListener('load', e => {
 		}
 	}
 
-	setInterval(render, 1000 / 100);
+	function loop (timestamp) {
+		render();
+		requestAnimationFrame(loop);
+	}
+	requestAnimationFrame(loop);
 
 	/**
 	 * 
@@ -206,64 +210,85 @@ window.addEventListener('load', e => {
 		return null;
 	}
 
-	let moving = false;
-	let selectingTree = null;
-	let sx = 0, sy = 0;
-	let startX = 0, startY = 0;
-	/**
-	 * @param {EventPoint} e 
-	 */
-	function onMoveStart(e) {
-		moving = true;
 
-		let x = e.offsetX, y = e.offsetY;
+
+	let moveState = {
+		/** @type {Tree} */
+		tree: null,
+		treeStartX: 0,
+		treeStartY: 0,
+		startX: 0,
+		startY: 0
+	}
+	/** @param {EventPoint} p */
+	function onMoveStart0 (p) {
+		let x = p.offsetX, y = p.offsetY;
 
 		let tree = hits(x, y);
 		if (null != tree) {
-			if (e.ctrlKey) {
+			if (p.ctrlKey) {
 				tree = tree.clone();
 				trees.push(tree);
 			}
 			tree.selected = true;
-			selectingTree = tree;
-			sx = x;
-			sy = y;
-			startX = tree.x;
-			startY = tree.y;
+			moveState.tree = tree;
+			moveState.startX = x;
+			moveState.startY = y;
+			moveState.treeStartX = tree.x;
+			moveState.treeStartY = tree.y;
+
+			onMoveStart = onMoveStart1;
+			onMove = onMove1;
+			onMoveEnd = onMoveEnd1;
 		}
 	}
+	/** @param {EventPoint} p */
+	function onMoveStart1 (p) {}
 
-	/**
-	 * @param {EventPoint} e 
-	 */
-	function onMove(e) {
-		let x = e.offsetX, y = e.offsetY;
-
-		if (moving) {
-			if (null != selectingTree) {
-				selectingTree.x = Math.round(startX + (x - sx) / squareSize);
-				selectingTree.y = Math.round(startY + (y - sy) / squareSize);
-			}
+	/** @param {EventPoint} p */
+	function onMove0 (p) {
+		let tree = hits(p.offsetX, p.offsetY);
+		if (null != tree) {
+			work.style.cursor = 'pointer';
 		} else {
-			let tree = hits(x, y);
-			if (null != tree) {
-				work.style.cursor = 'pointer';
-			} else {
-				work.style.cursor = 'auto';
-			}
+			work.style.cursor = 'auto';
 		}
 	}
+	/** @param {EventPoint} p */
+	function onMove1 (p) {
+		let x = p.offsetX, y = p.offsetY;
 
-	/**
-	 * @param {EventPoint} e 
-	 */
-	function onMoveEnd(e) {
-		moving = false;
+		moveState.tree.x = Math.round(moveState.treeStartX + (x - moveState.startX) / squareSize);
+		moveState.tree.y = Math.round(moveState.treeStartY + (y - moveState.startY) / squareSize);
+	}
 
-		if (null != selectingTree) {
-			selectingTree.selected = false;
-			selectingTree = null;
-		}
+	/** @param {EventPoint} p */
+	function onMoveEnd0(p) {}
+	/** @param {EventPoint} p */
+	function onMoveEnd1(p) {
+		moveState.tree.selected = false;
+
+		onMoveStart = onMoveStart0;
+		onMove = onMove0;
+		onMoveEnd = onMoveEnd0;
+	}
+
+
+	let onMoveStart = onMoveStart0;
+	let onMove = onMove0;
+	let onMoveEnd = onMoveEnd0;
+
+	/** @param {EventPoint} p */
+	function onMoveStartEntry (p) {
+		onMoveStart(p);
+	}
+	/** @param {EventPoint} p */
+	function onMoveEntry (p) {
+		onMove(p);
+	}
+	/** @param {EventPoint} p */
+	function onMoveEndEntry (p) {
+		onMoveEnd(p);
 	}
 
 	function wrapMouseListener (listener) {
@@ -282,13 +307,13 @@ window.addEventListener('load', e => {
 		};
 	}
 
-	work.addEventListener('mousedown', wrapMouseListener(onMoveStart));
-	work.addEventListener('touchstart', wrapTouchListener(onMoveStart));
+	work.addEventListener('mousedown', wrapMouseListener(onMoveStartEntry));
+	work.addEventListener('touchstart', wrapTouchListener(onMoveStartEntry));
 
-	work.addEventListener('mousemove', wrapMouseListener(onMove));
-	work.addEventListener('touchmove', wrapTouchListener(onMove));
+	work.addEventListener('mousemove', wrapMouseListener(onMoveEntry));
+	work.addEventListener('touchmove', wrapTouchListener(onMoveEntry));
 
-	work.addEventListener('mouseup', wrapMouseListener(onMoveEnd));
-	work.addEventListener('touchcancel', wrapTouchListener(onMoveEnd));
-	work.addEventListener('touchend', wrapTouchListener(onMoveEnd));
+	work.addEventListener('mouseup', wrapMouseListener(onMoveEndEntry));
+	work.addEventListener('touchcancel', wrapTouchListener(onMoveEndEntry));
+	work.addEventListener('touchend', wrapTouchListener(onMoveEndEntry));
 });
