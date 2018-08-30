@@ -249,7 +249,7 @@ window.addEventListener('load', e => {
 	function onMove0 (p) {
 		let tree = hits(p.offsetX, p.offsetY);
 		if (null != tree) {
-			work.style.cursor = 'pointer';
+			work.style.cursor = p.ctrlKey ? 'copy' : 'move';
 		} else {
 			work.style.cursor = 'auto';
 		}
