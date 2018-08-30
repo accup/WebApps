@@ -214,7 +214,9 @@ window.addEventListener('load', e => {
 
 	let moveState = {
 		/** @type {Tree} */
-		tree: null,
+		hoveredTree: null,
+		/** @type {Tree} */
+		selectedTree: null,
 		treeStartX: 0,
 		treeStartY: 0,
 		startX: 0,
@@ -231,7 +233,8 @@ window.addEventListener('load', e => {
 				trees.push(tree);
 			}
 			tree.selected = true;
-			moveState.tree = tree;
+			moveState.hoveredTree = null;
+			moveState.selectedTree = tree;
 			moveState.startX = x;
 			moveState.startY = y;
 			moveState.treeStartX = tree.x;
@@ -249,8 +252,10 @@ window.addEventListener('load', e => {
 	function onMove0 (p) {
 		let tree = hits(p.offsetX, p.offsetY);
 		if (null != tree) {
+			moveState.hoveredTree = tree;
 			work.style.cursor = p.ctrlKey ? 'copy' : 'move';
 		} else {
+			moveState.hoveredTree = null;
 			work.style.cursor = 'auto';
 		}
 	}
@@ -258,15 +263,17 @@ window.addEventListener('load', e => {
 	function onMove1 (p) {
 		let x = p.offsetX, y = p.offsetY;
 
-		moveState.tree.x = Math.round(moveState.treeStartX + (x - moveState.startX) / squareSize);
-		moveState.tree.y = Math.round(moveState.treeStartY + (y - moveState.startY) / squareSize);
+		moveState.selectedTree.x = Math.round(moveState.treeStartX + (x - moveState.startX) / squareSize);
+		moveState.selectedTree.y = Math.round(moveState.treeStartY + (y - moveState.startY) / squareSize);
 	}
 
 	/** @param {EventPoint} p */
 	function onMoveEnd0(p) {}
 	/** @param {EventPoint} p */
 	function onMoveEnd1(p) {
-		moveState.tree.selected = false;
+		moveState.selectedTree.selected = false;
+		moveState.hoveredTree = moveState.selectedTree;
+		moveState.selectedTree = null;
 
 		onMoveStart = onMoveStart0;
 		onMove = onMove0;
@@ -316,4 +323,31 @@ window.addEventListener('load', e => {
 	work.addEventListener('mouseup', wrapMouseListener(onMoveEndEntry));
 	work.addEventListener('touchcancel', wrapTouchListener(onMoveEndEntry));
 	work.addEventListener('touchend', wrapTouchListener(onMoveEndEntry));
+
+	window.addEventListener('keydown', e => {
+		e.preventDefault();
+
+		if (!e.repeat) switch (e.key) {
+		case "Control":
+			if (null != moveState.hoveredTree) {
+				work.style.cursor = 'copy';
+			}
+			break;
+		default:
+			break;
+		}
+	});
+	window.addEventListener('keyup', e => {
+		e.preventDefault();
+
+		if (!e.repeat) switch (e.key) {
+		case "Control":
+			if (null != moveState.hoveredTree) {
+				work.style.cursor = 'move';
+			}
+			break;
+		default:
+			break;
+		}
+	});
 });
