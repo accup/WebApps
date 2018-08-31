@@ -108,45 +108,7 @@ window.addEventListener('load', e => {
 		)
 	];
 
-	let PIOver4 = Math.PI / 4;
-
-	/**
-	 * 
-	 * @param {number} x 
-	 * @param {number} y 
-	 * @param {TreeNode} node 
-	 * @param {number} px 
-	 * @param {number} py 
-	 * @param {boolean} isLeft 
-	 */
-	function renderNode (x, y, node, px, py, isLeft) {
-		if (null === node) return;
-
-		if (node instanceof Circle) {
-			if (null !== px) {
-				work_ctx.moveTo(px, py);
-				work_ctx.lineTo(x + (isLeft ? squareJoint : -squareJoint), y - squareJoint);
-			}
-			if (isLeft) {
-				work_ctx.arc(x, y, halfSquareSize, -PIOver4, 7 * PIOver4);
-			} else {
-				work_ctx.arc(x, y, halfSquareSize, -3 * PIOver4, 5 * PIOver4);
-			}
-			renderNode(x - squareSize, y + squareSize, node.left, x - squareJoint, y + squareJoint, true);
-			renderNode(x + squareSize, y + squareSize, node.right, x + squareJoint, y + squareJoint, false);
-		} else if (node instanceof Triangle) {
-			if (null !== px) {
-				work_ctx.moveTo(px, py);
-				work_ctx.lineTo(x, y);
-			}
-			work_ctx.moveTo(x, y);
-			work_ctx.lineTo(x - halfSquareSize, y + node.level * squareSize);
-			work_ctx.lineTo(x + halfSquareSize, y + node.level * squareSize);
-			work_ctx.closePath();
-		}
-	}
 	function render () {
-		work_ctx.fillStyle = "white";
 		work_ctx.lineWidth = 1;
 
 		work_ctx.clearRect(0, 0, work.width, work.height);
@@ -156,12 +118,17 @@ window.addEventListener('load', e => {
 
 			if (tree.selected) {
 				work_ctx.strokeStyle = "red";
+				work_ctx.fillStyle = "white";
+			} else if (tree.hovered) {
+				work_ctx.strokeStyle = "black";
+				work_ctx.fillStyle = "#F8F8F8";
 			} else {
 				work_ctx.strokeStyle = "black";
+				work_ctx.fillStyle = "white";
 			}
 
 			work_ctx.beginPath();
-			renderNode(tree.x * squareSize, tree.y * squareSize, tree.root, null, null);
+			tree.root.render(work_ctx, tree.x * style.squareSize, tree.y * style.squareSize);
 			work_ctx.fill();
 			work_ctx.stroke();
 		}
@@ -202,9 +169,9 @@ window.addEventListener('load', e => {
 	 * @param {number} py 
 	 */
 	function hits (px, py) {
-		for (let i=0, n=trees.length; i<n; ++i) {
+		for (let i=trees.length-1; i>=0; --i) {
 			let tree = trees[i];
-			let node = hitsNode(tree.x * squareSize, tree.y * squareSize, tree.root, px, py);
+			let node = hitsNode(tree.x * style.squareSize, tree.y * style.squareSize, tree.root, px, py);
 			if (null != node) return tree;
 		}
 		return null;
@@ -229,10 +196,11 @@ window.addEventListener('load', e => {
 		let tree = hits(x, y);
 		if (null != tree) {
 			if (p.ctrlKey) {
+				tree.blur();
 				tree = tree.clone();
 				trees.push(tree);
 			}
-			tree.selected = true;
+			tree.select();
 			moveState.hoveredTree = null;
 			moveState.selectedTree = tree;
 			moveState.startX = x;
@@ -252,10 +220,14 @@ window.addEventListener('load', e => {
 	function onMove0 (p) {
 		let tree = hits(p.offsetX, p.offsetY);
 		if (null != tree) {
+			tree.hover();
 			moveState.hoveredTree = tree;
 			work.style.cursor = p.ctrlKey ? 'copy' : 'move';
 		} else {
-			moveState.hoveredTree = null;
+			if (null !== moveState.hoveredTree) {
+				moveState.hoveredTree.blur();
+				moveState.hoveredTree = null;
+			}
 			work.style.cursor = 'auto';
 		}
 	}
@@ -263,15 +235,15 @@ window.addEventListener('load', e => {
 	function onMove1 (p) {
 		let x = p.offsetX, y = p.offsetY;
 
-		moveState.selectedTree.x = Math.round(moveState.treeStartX + (x - moveState.startX) / squareSize);
-		moveState.selectedTree.y = Math.round(moveState.treeStartY + (y - moveState.startY) / squareSize);
+		moveState.selectedTree.x = Math.round(moveState.treeStartX + (x - moveState.startX) / style.squareSize);
+		moveState.selectedTree.y = Math.round(moveState.treeStartY + (y - moveState.startY) / style.squareSize);
 	}
 
 	/** @param {EventPoint} p */
 	function onMoveEnd0(p) {}
 	/** @param {EventPoint} p */
 	function onMoveEnd1(p) {
-		moveState.selectedTree.selected = false;
+		moveState.selectedTree.hover();
 		moveState.hoveredTree = moveState.selectedTree;
 		moveState.selectedTree = null;
 
@@ -325,8 +297,6 @@ window.addEventListener('load', e => {
 	work.addEventListener('touchend', wrapTouchListener(onMoveEndEntry));
 
 	window.addEventListener('keydown', e => {
-		e.preventDefault();
-
 		if (!e.repeat) switch (e.key) {
 		case "Control":
 			if (null != moveState.hoveredTree) {
@@ -338,8 +308,6 @@ window.addEventListener('load', e => {
 		}
 	});
 	window.addEventListener('keyup', e => {
-		e.preventDefault();
-
 		if (!e.repeat) switch (e.key) {
 		case "Control":
 			if (null != moveState.hoveredTree) {
