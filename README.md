@@ -1,3 +1,3 @@
 # Index
 
-- Trees <https://accup.github.io/WebApps/Trees/>{:target="_blank"}
+- Trees <https://accup.github.io/WebApps/Trees/>
