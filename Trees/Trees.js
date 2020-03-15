@@ -1,35 +1,8 @@
 const style = {};
 style.squareSize = 32;
 style.halfSquareSize = style.squareSize / 2;
+style.halfSquareSq = style.halfSquareSize * style.halfSquareSize;
 style.squareJoint = style.halfSquareSize / Math.sqrt(2);
-
-/**
- * @param {number} x 
- * @param {number} y 
- * @param {number} r 
- * @param {number} px 
- * @param {number} py 
- */
-function hitsCircle (x, y, r, px, py) {
-	let dx = px - x;
-	let dy = py - y;
-
-	return (dx * dx + dy * dy <= r * r);
-}
-/**
- * @param {number} x 
- * @param {number} y 
- * @param {number} w 
- * @param {number} h 
- * @param {number} px 
- * @param {number} py 
- */
-function hitsTriangle (x, y, w, h, px, py) {
-	let dx = px - x;
-	let dy = py - y;
-
-	return (0 <= dy && dy <= h && 2 * Math.abs(dx) * h <= w * dy);
-}
 
 class TreeNode {
 	constructor () {
@@ -58,6 +31,15 @@ class TreeNode {
 	 */
 	render (ctx, px, py) {}
 
+	/**
+	 * @param {number} px 親X [px]
+	 * @param {number} py 親Y [px]
+	 * @param {number} tx 判定X [px]
+	 * @param {number} ty 判定Y [px]
+	 * @returns {TreeNode}
+	 */
+	hits (px, py, tx, ty) { return null; }
+
 	clone () {
 		return new TreeNode;
 	}
@@ -79,27 +61,31 @@ class Circle extends TreeNode {
 
 		this._left = new NullNode;
 		this._right = new NullNode;
+		this._leftPrepared = false;
+		this._rightPrepared = false;
 		this.left = left;
 		this.right = right;
 	}
 
 	prepare () {
 		super.prepare();
-		this.prepareLeft();
-		this.prepareRight();
-	}
+		if (!this._leftPrepared) {
+			this._left.prepare();
+			this._leftPrepared = true;
+		}
+		if (!this._rightPrepared) {
+			this._right.prepare();
+			this._rightPrepared = true;
+		}
 
-	prepareLeft () {
-		this._left.prepare();
-		this._left.x = -this._left.rw - 1;
+		let cw = Math.floor((this._left.rw + this._right.lw + 2) / 2);
+
+		this._left.x = -cw;
 		this._left.y = 1;
-		this.lw = this._left instanceof NullNode ? 0 : this._left.lw + 1 + this._left.rw;
-	}
-	prepareRight () {
-		this._right.prepare();
-		this._right.x = this._right.lw + 1;
+		this.lw = this._left instanceof NullNode ? 0 : this._left.lw + cw;
+		this._right.x = cw;
 		this._right.y = 1;
-		this.rw = this._right instanceof NullNode ? 0 : this._right.lw + 1 + this._right.rw;
+		this.rw = this._right instanceof NullNode ? 0 : cw + this._right.rw;
 	}
 
 	get left () { return this._left; }
@@ -108,8 +94,8 @@ class Circle extends TreeNode {
 		this._left._parent = null;
 		this._left = value || new NullNode;
 		this._left._parent = this;
-
-		this.prepareLeft();
+		this._leftPrepared = false;
+		this.prepare();
 	}
 
 	get right () { return this._right; }
@@ -118,8 +104,8 @@ class Circle extends TreeNode {
 		this._right._parent = null;
 		this._right = value || new NullNode;
 		this._right._parent = this;
-
-		this.prepareRight();
+		this._rightPrepared = false;
+		this.prepare();
 	}
 
 	/**
@@ -138,11 +124,27 @@ class Circle extends TreeNode {
 		ctx.moveTo(x + style.halfSquareSize, y);
 		ctx.arc(x, y, style.halfSquareSize, 0, 2 * Math.PI);
 
-		if (null !== this._left)
-			this._left.render(ctx, x, y);
-		if (null !== this._right)
-			this._right.render(ctx, x, y);
+		this._left.render(ctx, x, y);
+		this._right.render(ctx, x, y);
 	}
+
+	/**
+	 * @param {number} px 親X [px]
+	 * @param {number} py 親Y [px]
+	 * @param {number} tx 判定X [px]
+	 * @param {number} ty 判定Y [px]
+	 * @returns {TreeNode}
+	 */
+	hits (px, py, tx, ty) {
+		let x = px + this.x * style.squareSize, y = py + this.y * style.squareSize;
+		let dx = tx - x, dy = ty - y;
+		if (dx * dx + dy * dy <= style.halfSquareSq || this._left.hits(x, y, tx, ty) || this._right.hits(x, y, tx, ty)) {
+			return this;
+		} else {
+			return null;
+		}
+	}
+
 
 	clone () {
 		return new Circle (
@@ -187,6 +189,24 @@ class Triangle extends TreeNode {
 		ctx.closePath();
 	}
 
+	/**
+	 * @param {number} px 親X [px]
+	 * @param {number} py 親Y [px]
+	 * @param {number} tx 判定X [px]
+	 * @param {number} ty 判定Y [px]
+	 * @returns {TreeNode}
+	 */
+	hits (px, py, tx, ty) {
+		let x = px + this.x * style.squareSize, y = py + this.y * style.squareSize;
+		let dx = tx - x, dy = ty - y;
+		let w = style.squareSize, h = this.level * style.squareSize;
+		if (0 <= dy && dy <= h && 2 * Math.abs(dx) * h <= w * dy) {
+			return this;
+		} else {
+			return null;
+		}
+	}
+
 	clone () {
 		return new Triangle (this.level);
 	}
@@ -226,9 +246,21 @@ class Tree {
 	/**
 	 * @param {CanvasRenderingContext2D} ctx 
 	 */
-	render (ctx) {}
+	render (ctx) {
+		this.root.render(ctx, this.x * style.squareSize, this.y * style.squareSize);
+	}
+
+	/**
+	 * @param {number} tx 判定X [px]
+	 * @param {number} ty 判定Y [px]
+	 * @returns {TreeNode}
+	 */
+	hits (tx, ty) {
+		return this.root.hits(this.x * style.squareSize, this.y * style.squareSize, tx, ty);
+	}
 
 	clone () {
 		return new Tree(this.x, this.y, this.root.clone());
 	}
 }
+

@@ -1,8 +1,5 @@
 window.addEventListener('load', e => {
-	let squareSize = 32;
-	let halfSquareSize = squareSize / 2;
-	let squareJoint = halfSquareSize / Math.sqrt(2);
-
+	let immutablePattern = createStripedPattern(1.2, 2.4, 'lightgray', 'white')
 	/** @type {HTMLCanvasElement} */
 	let work = document.getElementById('workspace');
 	let work_ctx = work.getContext('2d');
@@ -22,17 +19,19 @@ window.addEventListener('load', e => {
 		ctx.beginPath();
 		ctx.strokeStyle = '#C0C0C0';
 		ctx.lineWidth = 1;
-		for (let x=0; x<cw; x+=squareSize) {
+		for (let x=0; x<cw; x+=style.squareSize) {
 			ctx.moveTo(x, 0);
 			ctx.lineTo(x, ch);
 		}
-		for (let y=0; y<ch; y+=squareSize) {
+		for (let y=0; y<ch; y+=style.squareSize) {
 			ctx.moveTo(0, y);
 			ctx.lineTo(cw, y);
 		}
 		ctx.stroke();
 	});
 
+	let immutableCircle = new Tree(1, 1, new Circle(null, null));
+	let immutableTriangle = new Tree(1, 2, new Triangle(2));
 	let trees = [
 		new Tree(
 			5, 1,
@@ -51,59 +50,22 @@ window.addEventListener('load', e => {
 			new Triangle(3)
 		),
 		new Tree(
-			2, 1,
+			10, 5,
 			new Circle(
-				new Circle(null, null),
-				null
-			)
-		),
-		new Tree(
-			1, 4,
-			new Circle(
-				null,
-				new Circle(null, null)
-			)
-		),
-		new Tree(
-			10, 1,
-			new Circle(
-				new Triangle(1),
-				null
-			)
-		),
-		new Tree(
-			11, 1,
-			new Circle(
-				null,
-				new Triangle(1)
-			)
-		),
-		new Tree(
-			14, 1,
-			new Circle(
-				new Triangle(2),
-				null
-			)
-		),
-		new Tree(
-			15, 1,
-			new Circle(
-				null,
-				new Triangle(2)
-			)
-		),
-		new Tree(
-			18, 1,
-			new Circle(
-				new Triangle(3),
-				null
-			)
-		),
-		new Tree(
-			19, 1,
-			new Circle(
-				null,
-				new Triangle(3)
+				new Circle(
+					new Circle(null, new Triangle(2)),
+					null
+				),
+				new Circle(
+					new Circle(new Circle(null, null), new Triangle(3)),
+					new Circle(
+						new Triangle(1),
+						new Circle(
+							new Triangle(6),
+							new Triangle(4)
+						)
+					)
+				)
 			)
 		)
 	];
@@ -112,6 +74,19 @@ window.addEventListener('load', e => {
 		work_ctx.lineWidth = 1;
 
 		work_ctx.clearRect(0, 0, work.width, work.height);
+
+		work_ctx.strokeStyle = "blue";
+		work_ctx.fillStyle = immutablePattern;
+
+		work_ctx.beginPath();
+		immutableCircle.render(work_ctx);
+		work_ctx.fill();
+		work_ctx.stroke();
+
+		work_ctx.beginPath();
+		immutableTriangle.render(work_ctx);
+		work_ctx.fill();
+		work_ctx.stroke();
 
 		for (let i=0, n=trees.length; i<n; ++i) {
 			let tree = trees[i];
@@ -128,7 +103,7 @@ window.addEventListener('load', e => {
 			}
 
 			work_ctx.beginPath();
-			tree.root.render(work_ctx, tree.x * style.squareSize, tree.y * style.squareSize);
+			tree.render(work_ctx);
 			work_ctx.fill();
 			work_ctx.stroke();
 		}
@@ -141,38 +116,15 @@ window.addEventListener('load', e => {
 	requestAnimationFrame(loop);
 
 	/**
-	 * 
-	 * @param {number} x 
-	 * @param {number} y 
-	 * @param {TreeNode} node 
-	 * @param {number} px 
-	 * @param {number} py 
+	 * @param {number} tx 
+	 * @param {number} ty 
 	 */
-	function hitsNode (x, y, node, px, py) {
-		if (null == node) return null;
-
-		if (node instanceof Circle) {
-			if (hitsCircle(x, y, halfSquareSize, px, py)) {
-				return node;
-			}
-			return hitsNode(x - squareSize, y + squareSize, node.left, px, py) || hitsNode(x + squareSize, y + squareSize, node.right, px, py);
-		} else if (node instanceof Triangle) {
-			if (hitsTriangle(x, y, squareSize, node.level * squareSize, px, py)) {
-				return node;
-			}
-		}
-		return null;
-	}
-	/**
-	 * 
-	 * @param {number} px 
-	 * @param {number} py 
-	 */
-	function hits (px, py) {
+	function hits (tx, ty) {
 		for (let i=trees.length-1; i>=0; --i) {
 			let tree = trees[i];
-			let node = hitsNode(tree.x * style.squareSize, tree.y * style.squareSize, tree.root, px, py);
-			if (null != node) return tree;
+			
+			let node = tree.hits(tx, ty);
+			if (node) return tree;
 		}
 		return null;
 	}
@@ -189,6 +141,7 @@ window.addEventListener('load', e => {
 		startX: 0,
 		startY: 0
 	}
+
 	/** @param {EventPoint} p */
 	function onMoveStart0 (p) {
 		let x = p.offsetX, y = p.offsetY;
@@ -256,6 +209,7 @@ window.addEventListener('load', e => {
 	let onMoveStart = onMoveStart0;
 	let onMove = onMove0;
 	let onMoveEnd = onMoveEnd0;
+	let onMoveSet;
 
 	/** @param {EventPoint} p */
 	function onMoveStartEntry (p) {

@@ -85,3 +85,31 @@ class EventPoint {
 		return p;
 	}
 }
+
+/**
+ * @param {number} weight 
+ * @param {number} padding 
+ * @param {string} stroke 
+ * @param {string} fill 
+ */
+function createStripedPattern (weight, padding, stroke, fill) {
+	let cvs = document.createElement('canvas');
+	cvs.width = cvs.height = weight + 2 * padding;
+	let ctx = cvs.getContext('2d');
+	ctx.strokeStyle = stroke;
+	ctx.fillStyle = fill;
+	ctx.lineWidth = weight;
+
+	ctx.fillRect(0, 0, cvs.width, cvs.height);
+
+	ctx.beginPath();
+	ctx.moveTo( cvs.width, -cvs.height);
+	ctx.lineTo(-cvs.width,  cvs.height);
+	ctx.moveTo(2 * cvs.width, -cvs.height);
+	ctx.lineTo(-cvs.width, 2 * cvs.height);
+	ctx.moveTo(2 * cvs.width, 0);
+	ctx.lineTo(0, 2 * cvs.height);
+	ctx.stroke();
+
+	return ctx.createPattern(cvs, 'repeat');
+}
