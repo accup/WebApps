@@ -1,0 +1,25 @@
+{
+  "name": "webapps",
+  "version": "1.0.0",
+  "private": true,
+  "description": "徒然なるWebアプリケーションズ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/accup/WebApps.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/accup/WebApps/issues"
+  },
+  "homepage": "https://github.com/accup/WebApps#readme",
+  "devDependencies": {
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11"
+  }
+}
