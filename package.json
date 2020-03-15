@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/accup/WebApps#readme",
   "devDependencies": {
+    "html-loader": "^0.5.5",
     "node-sass": "^4.13.1",
     "sass-loader": "^8.0.2",
     "webpack": "^4.42.0",
