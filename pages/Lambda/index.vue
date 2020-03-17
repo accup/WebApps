@@ -8,9 +8,6 @@
 <script>
 export default {
 	head: {
-		bodyAttrs: {
-			id: 'main-wrapper'
-		},
 		script: [
 			{ src: './Lambda.js' },
 			{ src: './script.js' }
@@ -19,6 +16,6 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
 @import "~/assets/Lambda/style.scss";
 </style>
