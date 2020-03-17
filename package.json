@@ -1,8 +1,8 @@
 {
   "name": "webapps",
   "version": "1.0.0",
-  "private": true,
   "description": "徒然なるWebアプリケーションズ",
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,13 +10,10 @@
     "type": "git",
     "url": "git+https://github.com/accup/WebApps.git"
   },
-  "keywords": [],
-  "author": "",
+  "author": "Accup",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/accup/WebApps/issues"
   },
-  "homepage": "https://github.com/accup/WebApps#readme",
-  "devDependencies": {
-  }
+  "homepage": "https://github.com/accup/WebApps#readme"
 }
