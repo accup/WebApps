@@ -4,7 +4,8 @@
   "description": "徒然なるWebアプリケーションズ",
   "private": true,
   "scripts": {
-    "dev": "nuxt"
+    "dev": "nuxt",
+    "build": "nuxt build"
   },
   "repository": {
     "type": "git",
