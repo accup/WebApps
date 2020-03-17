@@ -4,7 +4,7 @@
   "description": "徒然なるWebアプリケーションズ",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nuxt"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/accup/WebApps/issues"
   },
-  "homepage": "https://github.com/accup/WebApps#readme"
+  "homepage": "https://github.com/accup/WebApps#readme",
+  "devDependencies": {
+    "nuxt": "^2.11.0"
+  }
 }
