@@ -1,5 +1,8 @@
 export default {
 	mode: 'spa',
+	router: {
+		base: '/WebApps/'
+	},
 	head: {
 		/**
 		 * タイトルの変換処理
