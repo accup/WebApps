@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/accup/WebApps#readme",
   "devDependencies": {
+    "@nuxt/typescript-build": "^0.6.0",
     "node-sass": "^4.13.1",
     "nuxt": "^2.11.0",
     "push-dir": "^0.4.1",
