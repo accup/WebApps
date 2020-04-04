@@ -18,5 +18,14 @@ export default {
 			{ name: 'viewport', content: 'width=device-width, initial-scale=1' }
 		]
 	},
-	buildModules: ['@nuxt/typescript-build']
+	pwa: {
+		manifest: {
+			name: 'Accup WebApps',
+			lang: 'ja'
+		}
+	},
+	buildModules: ['@nuxt/typescript-build'],
+	modules: [
+		'@nuxtjs/pwa'
+	]
 };

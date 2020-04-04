@@ -5,6 +5,9 @@
 /.nuxt
 /dist
 
+# Nuxt PWA
+sw.*
+
 # Sass
 .sass-cache
 *.css.map
