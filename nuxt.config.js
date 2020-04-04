@@ -18,14 +18,14 @@ export default {
 			{ name: 'viewport', content: 'width=device-width, initial-scale=1' }
 		]
 	},
-	pwa: {
-		manifest: {
-			name: 'Accup WebApps',
-			lang: 'ja'
-		}
-	},
+	// pwa: {
+	// 	manifest: {
+	// 		name: 'Accup WebApps',
+	// 		lang: 'ja'
+	// 	}
+	// },
 	buildModules: ['@nuxt/typescript-build'],
-	modules: [
-		'@nuxtjs/pwa'
-	]
+	// modules: [
+	// 	'@nuxtjs/pwa'
+	// ]
 };
