@@ -46,6 +46,12 @@ export default {
 		}
 	},
 	mounted() {
+		if ('serviceWorker' in navigator) {
+			navigator.serviceWorker
+				.register('/WebApps/BeatsPerMinute/sw.js')
+				.then(() => console.log('Service Worker registered \\(^o^)/'));
+		}
+		
 		const updateBeatCircleLoop = () => {
 			this.updateBeatCircleScale();
 			requestAnimationFrame(updateBeatCircleLoop);
@@ -89,6 +95,7 @@ export default {
 	head: {
 		title: 'Beats Per Minute',
 		link: [
+			{ rel:'manifest', href:'manifest.json' },
 			{ rel:'icon', type:'image/png', href:'favicon.png' }
 		]
 	}
