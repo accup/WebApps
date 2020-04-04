@@ -87,7 +87,10 @@ export default {
 		}
 	},
 	head: {
-		title: 'Beats Per Minute'
+		title: 'Beats Per Minute',
+		link: [
+			{ rel:'icon', type:'image/png', href:'favicon.png' }
+		]
 	}
 }
 </script>
