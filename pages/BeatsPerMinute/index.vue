@@ -1,7 +1,7 @@
 <template>
 	<div id='main'>
 		<div id='bpmViewer'>
-			{{ bpm }}
+			{{ (bps * 60.0).toFixed() }}
 			<span class='small-caps'>BPM</span>
 		</div>
 		<div id='controller'>
@@ -26,7 +26,7 @@ let resetTimerId = null;
 
 export default {
 	data: () => ({
-		bpm: 120,
+		bps: 2.0,
 		beatCount: 0
 	}),
 	computed: {
@@ -45,7 +45,7 @@ export default {
 			}
 			
 			beatEstimator.beat(performance.now() / 1000.0);
-			this.bpm = beatEstimator.estimatedBps * 60;
+			this.bps = beatEstimator.estimatedBps;
 			++this.beatCount;
 			
 			if (resetTimerId != null) {
