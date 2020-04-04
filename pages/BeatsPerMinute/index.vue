@@ -1,11 +1,18 @@
 <template>
 	<div id='main'>
+		<div id='beatViewer'>
+			<div id='beatCircle' ref='beatCircle'></div>
+		</div>
 		<div id='bpmViewer'>
-			{{ (bps * 60.0).toFixed() }}
-			<span class='small-caps'>BPM</span>
+			<div id='bpmTextWrapper'>
+				{{ (bps * 60.0).toFixed() }}
+				<span class='small-caps'>BPM</span>
+			</div>
 		</div>
 		<div id='controller'>
-			<button id='beatButton' @click="beat">
+			<button id='beatButton'
+					@mousedown.prevent="beat"
+					@touchstart="beat">
 				{{ beatButtonText }}
 			</button>
 		</div>
@@ -26,7 +33,7 @@ let resetTimerId = null;
 
 export default {
 	data: () => ({
-		bps: 2.0,
+		bps: beatEstimator.estimatedBps,
 		beatCount: 0
 	}),
 	computed: {
@@ -37,6 +44,14 @@ export default {
 				return `${this.beatCount}`;
 			}
 		}
+	},
+	mounted() {
+		const updateBeatCircleLoop = () => {
+			this.updateBeatCircleScale();
+			requestAnimationFrame(updateBeatCircleLoop);
+		}
+		
+		this.$nextTick(updateBeatCircleLoop);
 	},
 	methods: {
 		beat() {
@@ -57,7 +72,22 @@ export default {
 			resetTimerId = null;
 			beatEstimator.reset();
 			this.beatCount = 0;
+		},
+		updateBeatCircleScale() {
+			const bps = beatEstimator.estimatedBps;
+			const anchorTimeInSeconds = beatEstimator.estimatedAnchorTimeInSeconds;
+			const nowTimeInSeconds = performance.now() / 1000.0;
+			const elapsedTimeInSeconds = nowTimeInSeconds - anchorTimeInSeconds;
+			
+			const phase = (elapsedTimeInSeconds * bps) % 1.0;
+			if (phase < 0.0) {
+				phase += 1.0;
+			}
+			this.$refs.beatCircle.style.opacity = 1.0 - 0.7 * phase;
 		}
+	},
+	head: {
+		title: 'Beats Per Minute'
 	}
 }
 </script>
@@ -69,34 +99,75 @@ export default {
 	right: 0;
 	top: 0;
 	bottom: 0;
+	margin: 0;
 	
 	background-color: #080010;
 	
-	display: grid;
-	grid-template-rows: 1fr 1fr 2fr;
+	display: flex;
+	flex-direction: column;
 	
-	#bpmViewer {
-		grid-row: 2;
-		
-		margin: auto;
-		
-		color: white;
-		font-size: 2.4em;
-		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-		text-align: center;
-	}
-	
-	#controller {
-		grid-row: 3;
+	#beatViewer {
+		flex: 2 0 0px;
 		
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 		
-		#beatButton {
-			flex: 0 0 10em;
-			width: 10em;
+		#beatCircle {
+			width: 3em;
+			height: 3em;
+			border-radius: 1.5em;
+			
+			background-color: dodgerblue;
+			
+			transform-origin: 50% 50%;
+		}
+	}
+	
+	#bpmViewer {
+		flex: 1 0 0px;
+		
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		
+		#bpmTextWrapper {
+			color: white;
+			font-size: 2.4em;
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		}
+	}
+	
+	#controller {
+		flex: 4 0 0px;
+		
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		
+		button#beatButton {
+			flex: 0 0 8em;
+			width: 8em;
+			
+			color: deepskyblue;
+			background-color: rgba(deepskyblue, 0.2);
+			border: 3px solid deepskyblue;
+			border-radius: 4em;
+			font-size: 1.5em;
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			
+			transition: border-color 1s ease-out;
+			
+			&:active {
+				transition: border-color 0s;
+				border-color: rgba(deepskyblue, 0.2);
+			}
+			&:focus {
+				outline: none;
+			}
 		}
 	}
 }
