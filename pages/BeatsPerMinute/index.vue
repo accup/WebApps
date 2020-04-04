@@ -94,9 +94,17 @@ export default {
 	},
 	head: {
 		title: 'Beats Per Minute',
+		meta: [
+			{ name:'apple-mobile-web-app-capable', content:'yes' },
+			{ name:'apple-mobile-web-app-status-bar-style', content:'black' },
+			{ name:'apple-mobile-web-app-title', content:'BPM' },
+			{ hid:'description', name:'description', content:'BPMを測定するツール' },
+			{ name:'theme-color', content:'black' }
+		],
 		link: [
 			{ rel:'manifest', href:'manifest.json' },
-			{ rel:'icon', type:'image/png', href:'favicon.png' }
+			{ rel:'icon', type:'image/png', href:'favicon.png' },
+			{ rel:'apple-touch-icon', type:'image/png', href:'icons/icon_152.png' }
 		]
 	}
 }

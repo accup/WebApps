@@ -4,7 +4,7 @@
 	"name": "Beats Per Minute",
 	"short_name": "BPM",
 	"author": "Accup",
-	"description": "BPMの推定",
+	"description": "BPMを測定するツール",
 	"icons": [
 		{
 			"src": "/WebApps/BeatsPerMinute/icons/icon_64.png",
