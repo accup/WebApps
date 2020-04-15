@@ -4,8 +4,8 @@
   "description": "徒然なるWebアプリケーションズ",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
-    "build": "nuxt build",
+    "dev:BeatsPerMinute": "nuxt dev ./apps/BeatsPerMinute",
+    "build:BeatsPerMinute": "nuxt build ./apps/BeatsPerMinute",
     "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup"
   },
   "repository": {
