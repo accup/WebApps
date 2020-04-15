@@ -18,16 +18,16 @@
     "url": "https://github.com/accup/WebApps/issues"
   },
   "homepage": "https://github.com/accup/WebApps#readme",
+  "dependencies": {
+    "@nuxtjs/pwa": "^3.0.0-beta.20",
+    "nuxt": "^2.12.2",
+    "nuxt-i18n": "^6.9.1"
+  },
   "devDependencies": {
     "@nuxt/typescript-build": "^0.6.5",
     "@nuxtjs/vuetify": "^1.11.0",
     "node-sass": "^4.13.1",
     "push-dir": "^0.4.1",
     "sass-loader": "^8.0.2"
-  },
-  "dependencies": {
-    "@nuxtjs/pwa": "^3.0.0-beta.20",
-    "nuxt": "^2.12.2",
-    "nuxt-i18n": "^6.9.1"
   }
 }
