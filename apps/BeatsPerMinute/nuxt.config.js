@@ -36,6 +36,7 @@ export default {
       { hid: 'description', name: 'description', content: 'BPM簡易測定ツール' }
     ],
     link: [
+      { rel: 'icon', type: 'image/x-icon', href: `${rootPageDir}favicon.ico` }
     ]
   },
   /*
