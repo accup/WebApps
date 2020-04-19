@@ -18,10 +18,6 @@
         <span>CONFIG</span>
         <v-icon>{{ icons.mdiCog }}</v-icon>
       </v-btn>
-      <v-btn nuxt :to="localePath('/about')">
-        <span>ABOUT</span>
-        <v-icon>{{ icons.mdiInformation }}</v-icon>
-      </v-btn>
     </v-bottom-navigation>
   </v-app>
 </template>
