@@ -2,6 +2,7 @@ import colors from 'vuetify/es5/util/colors';
 
 const rootPageDir = '/WebApps/BeatsPerMinute/';
 
+
 export default {
   mode: 'spa',
   /*
@@ -14,7 +15,8 @@ export default {
   ** `generate` command configuration
   */
   generate: {
-    dir: '../../dist/BeatsPerMinute'
+    dir: '../../dist/BeatsPerMinute',
+    fallback: '404.html'
   },
   /*
   ** Headers of the page
@@ -58,7 +60,7 @@ export default {
   */
   buildModules: [
     '@nuxt/typescript-build',
-    '@nuxtjs/vuetify',
+    '@nuxtjs/vuetify'
   ],
   /*
   ** Nuxt.js modules
@@ -71,6 +73,9 @@ export default {
   ** PWA configuration
   */
   pwa: {
+    workbox: {
+      cachingExtensions: '@/plugins/workbox-vuetify-assets.js'
+    },
     manifest: {
       name: 'Beats Per Minute',
       short_name: 'BPM',
@@ -78,12 +83,35 @@ export default {
     }
   },
   /*
+  ** nuxt-i18n configuration
+  */
+  i18n: {
+    locales: [
+      {
+        code: 'ja',
+        file: 'ja/index.js'
+      }
+    ],
+    defaultLocale: 'ja',
+    lazy: true,
+    langDir: 'lang/'
+  },
+  /*
   ** vuetify module configuration
   ** https://github.com/nuxt-community/vuetify-module
   */
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
-    defaultAssets: false,
+    defaultAssets: {
+      font: {
+        family: 'Noto Sans JP'
+      },
+      icons: false
+    },
+    icons: {
+      iconfont: 'mdiSvg'
+    },
+    treeShake: true,
     theme: {
       dark: true,
       themes: {
@@ -97,17 +125,6 @@ export default {
           success: colors.green.accent3
         }
       }
-    }
-  },
-  /*
-  ** nuxt-i18n configuration
-  */
-  i18n: {
-    vueI18nLoader: true,
-    locales: ['ja'],
-    defaultLocale: 'ja',
-    vueI18n: {
-      fallbackLocale: 'ja'
     }
   },
   /*

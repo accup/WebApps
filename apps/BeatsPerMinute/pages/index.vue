@@ -1,24 +1,37 @@
 <template>
-  <div id='main'>
+  <v-container
+    fluid
+    fill-height
+    class="pa-0 d-flex flex-column align-stretch"
+    >
     <div id='beatViewer'>
-      <div id='beatCircle' ref='beatCircle'></div>
-    </div>
-    <div id='bpmViewer'>
-      <div id='bpmTextWrapper'>
-        {{ (bps * 60.0).toFixed() }}
-        <span class='small-caps'>BPM</span>
+      <div
+        id='beatCircle'
+        :style="{ opacity: 1.0 - 0.7 * beatPhase }"
+        >
       </div>
     </div>
-    <div id='controller'
-        @mousedown.prevent="beat"
-        @mouseup.prevent="deactivateBeatButton"
-        @touchstart.prevent="beat"
-        @touchend.prevent="deactivateBeatButton">
-      <div id='beatButton' ref='beatButton'>
+    <div id='bpmViewer'>
+      <div id='bpmTextWrapper' class='display-2'>
+        {{ (bps * 60.0).toFixed() }}
+        <span class='display-1'>BPM</span>
+      </div>
+    </div>
+    <div
+      id='controller'
+      @mousedown.prevent="activateBeatButton"
+      @mouseup.prevent="deactivateBeatButton"
+      @touchstart.prevent="activateBeatButton"
+      @touchend.prevent="deactivateBeatButton"
+      >
+      <div
+        id='beatButton'
+        :class="{ active: isBeatButtonActive }"
+        >
         {{ beatButtonText }}
       </div>
     </div>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -36,7 +49,9 @@ let resetTimerId = null;
 export default {
   data: () => ({
     bps: beatEstimator.estimatedBps,
-    beatCount: 0
+    beatCount: 0,
+    beatPhase: 0.0,
+    isBeatButtonActive: false
   }),
   computed: {
     beatButtonText() {
@@ -56,7 +71,7 @@ export default {
     this.$nextTick(updateBeatCircleLoop);
   },
   methods: {
-    beat() {
+    activateBeatButton() {
       if (this.beatCount == 0) {
         beatEstimator.reset();
       }
@@ -65,7 +80,7 @@ export default {
       this.bps = beatEstimator.estimatedBps;
       ++this.beatCount;
 
-      this.$refs.beatButton.classList.add('active');
+      this.isBeatButtonActive = true;
 
       if (resetTimerId != null) {
         clearTimeout(resetTimerId);
@@ -73,7 +88,7 @@ export default {
       resetTimerId = setTimeout(this.resetBeatEstimator, 2000);
     },
     deactivateBeatButton() {
-      this.$refs.beatButton.classList.remove('active');
+      this.isBeatButtonActive = false;
     },
     resetBeatEstimator() {
       resetTimerId = null;
@@ -90,33 +105,16 @@ export default {
       if (phase < 0.0) {
         phase += 1.0;
       }
-      this.$refs.beatCircle.style.opacity = 1.0 - 0.7 * phase;
+      this.beatPhase = phase;
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-#main {
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  margin: 0;
-
-  background-color: #080010;
-
-  display: flex;
-  flex-direction: column;
-
+main {
   #beatViewer {
-    flex: 2 0 0px;
+    flex: 4 0 0;
 
     display: flex;
     flex-direction: column;
@@ -135,7 +133,7 @@ export default {
   }
 
   #bpmViewer {
-    flex: 1 0 0px;
+    flex: 2 0 0;
 
     display: flex;
     flex-direction: column;
@@ -145,12 +143,11 @@ export default {
     #bpmTextWrapper {
       color: white;
       font-size: 2.4em;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
   }
 
   #controller {
-    flex: 4 0 0px;
+    flex: 7 0 0;
 
     display: flex;
     flex-direction: column;
@@ -166,7 +163,6 @@ export default {
       border: 3px solid deepskyblue;
       border-radius: 4em;
       font-size: 1.5em;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
       text-align: center;
       vertical-align: middle;
@@ -183,9 +179,5 @@ export default {
       }
     }
   }
-}
-
-.small-caps {
-  font-variant: small-caps;
 }
 </style>

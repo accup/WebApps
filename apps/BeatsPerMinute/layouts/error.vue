@@ -1,73 +1,61 @@
 <template>
-  <v-app dark>
-    <h1>
-      {{ this.error.statusCode }} {{ this.status.text }}
-    </h1>
-    <NuxtLink to="/">
-      Home page
-    </NuxtLink>
-  </v-app>
+  <v-container fluid fill-height>
+    <v-row justify="center">
+      <v-col cols=12 sm=8>
+        <v-card>
+          <v-card-title>
+            {{ status.code }}
+            -
+            {{ status.message }}
+          </v-card-title>
+          <v-divider/>
+          <v-card-text>
+            {{ status.text }}
+          </v-card-text>
+          <v-card-text>
+            {{ $t("layouts.error.MoveToCorrectPage") }}
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
-
-<i18n lang="yaml">
-ja:
-  status:
-    404:
-      text: "ファイルが見つかりませんでした。"
-    418:
-      text: "俺は急須だ。湯呑に注いでやれ。"
-    default:
-      text: "エラーが発生しました。"
-en:
-  status:
-    404:
-      text: "Not Found"
-    418:
-      text: "I'm a teapot"
-    default:
-      text: "An error occured"
-</i18n>
 
 <script>
 export default {
-  layout: 'empty',
   props: {
     error: {
       type: Object,
       default: null
     }
   },
-  computed: {
-    status () {
-      switch (this.error.statusCode) {
-      case 404:
-        return {
-          message: "Not Found",
-          text: this.$i18n.t('status.404.text')
-        }
-      case 418:
-        return {
-          message: "I'm a teapot",
-          text: this.$i18n.t('status.418.text')
-        }
-      default:
-        return {
-          message: "An error occured",
-          text: this.$i18n.t('status.default.text')
-        }
+  data () {
+    const code = this.error.statusCode;
+    let message;
+    let text;
+    if (this.$i18n.te(`errors.${code}.message`)) {
+      message = this.$i18n.t(`errors.${code}.message`);
+    } else {
+      message = this.$i18n.t(`errors.default.message`);
+    }
+    if (this.$i18n.te(`errors.${code}.text`)) {
+      text = this.$i18n.t(`errors.${code}.text`);
+    } else {
+      text = this.$i18n.t(`errors.default.text`);
+    }
+
+    return {
+      status: {
+        code,
+        message,
+        text
       }
     }
   },
   head () {
     return {
-      title: `${this.error.statusCode} ${this.status.message}`
+      title: `${this.status.code} - ${this.status.message}`
     }
   }
 }
 </script>
-
-<style scoped>
-h1 {
-  font-size: 20px;
-}
-</style>
