@@ -4,28 +4,28 @@
     fill-height
     class="pa-0 d-flex flex-column align-stretch"
     >
-    <div id='beatViewer'>
+    <div id="beatViewer">
       <div
-        id='beatCircle'
+        id="beatCircle"
         :style="{ opacity: 1.0 - 0.7 * beatPhase }"
         >
       </div>
     </div>
-    <div id='bpmViewer'>
-      <div id='bpmTextWrapper' class='display-2'>
+    <div id="bpmViewer">
+      <div id="bpmTextWrapper" class="display-2">
         {{ (bps * 60.0).toFixed() }}
-        <span class='display-1'>BPM</span>
+        <span class="display-1">BPM</span>
       </div>
     </div>
     <div
-      id='controller'
+      id="controller"
       @mousedown.prevent="activateBeatButton"
       @mouseup.prevent="deactivateBeatButton"
       @touchstart.prevent="activateBeatButton"
       @touchend.prevent="deactivateBeatButton"
       >
       <div
-        id='beatButton'
+        id="beatButton"
         :class="{ active: isBeatButtonActive }"
         >
         {{ beatButtonText }}
