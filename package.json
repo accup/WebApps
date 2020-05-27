@@ -21,13 +21,14 @@
   "dependencies": {
     "@nuxtjs/pwa": "^3.0.0-beta.20",
     "nuxt": "^2.12.2",
-    "nuxt-i18n": "^6.9.1"
+    "nuxt-i18n": "^6.9.1",
+    "vuex-persistedstate": "^3.0.1"
   },
   "devDependencies": {
     "@mdi/js": "^5.1.45",
     "@nuxt/typescript-build": "^0.6.5",
     "@nuxtjs/vuetify": "^1.11.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "push-dir": "^0.4.1",
     "sass-loader": "^8.0.2"
   }
