@@ -38,21 +38,29 @@
 import { BeatEstimator } from '@/modules/BeatsPerMinute';
 
 
-const beatEstimator = new BeatEstimator(
-  60.0 / 60,
-  240.0 / 60,
-  180
-);
-let resetTimerId = null;
-
-
 export default {
-  data: () => ({
-    bps: beatEstimator.estimatedBps,
-    beatCount: 0,
-    beatPhase: 0.0,
-    isBeatButtonActive: false
-  }),
+  beatEstimator: null,
+  resetTimerId: null,
+
+  data () {
+    const beginBpm = this.$store.state.configure.bpmRange.min;
+    const endBpm = this.$store.state.configure.bpmRange.max;
+    const bpmStep = this.$store.state.configure.bpmStep;
+
+    const beatEstimator = new BeatEstimator(
+      beginBpm / 60.0,
+      endBpm / 60.0,
+      Math.round((endBpm - beginBpm) / bpmStep)
+    );
+    this.$options.beatEstimator = beatEstimator;
+
+    return {
+      bps: beatEstimator.estimatedBps,
+      beatCount: 0,
+      beatPhase: 0.0,
+      isBeatButtonActive: false
+    }
+  },
   computed: {
     beatButtonText() {
       if (this.beatCount == 0) {
@@ -72,6 +80,8 @@ export default {
   },
   methods: {
     activateBeatButton() {
+      const beatEstimator = this.$options.beatEstimator;
+
       if (this.beatCount == 0) {
         beatEstimator.reset();
       }
@@ -82,20 +92,25 @@ export default {
 
       this.isBeatButtonActive = true;
 
+      const resetTimerId = this.$options.resetTimerId;
       if (resetTimerId != null) {
         clearTimeout(resetTimerId);
       }
-      resetTimerId = setTimeout(this.resetBeatEstimator, 2000);
+      this.$options.resetTimerId = setTimeout(this.resetBeatEstimator, 2000);
     },
     deactivateBeatButton() {
       this.isBeatButtonActive = false;
     },
     resetBeatEstimator() {
-      resetTimerId = null;
+      const beatEstimator = this.$options.beatEstimator;
+
+      this.$options.resetTimerId = null;
       beatEstimator.reset();
       this.beatCount = 0;
     },
     updateBeatCircleScale() {
+      const beatEstimator = this.$options.beatEstimator;
+
       const bps = beatEstimator.estimatedBps;
       const anchorTimeInSeconds = beatEstimator.estimatedAnchorTimeInSeconds;
       const nowTimeInSeconds = performance.now() / 1000.0;

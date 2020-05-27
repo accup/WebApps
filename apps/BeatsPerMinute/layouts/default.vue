@@ -12,7 +12,9 @@
       >
       <v-btn nuxt :to="localePath('/')">
         <span>BPM</span>
-        <v-icon>{{ icons.mdiHome }}</v-icon>
+        <span aria-hidden="true" class="v-icon v-icon--svg theme--dark">
+          <icon-bpm width="24" height="24"/>
+        </span>
       </v-btn>
       <v-btn nuxt :to="localePath('/configure')">
         <span>CONFIG</span>
@@ -24,13 +26,17 @@
 
 <script>
 import { mdiHome, mdiCog, mdiInformation } from '@mdi/js';
+import IconBpm from '@/components/icons/bpm.vue';
 
 export default {
+  components: {
+    IconBpm,
+  },
   data: () => ({
     icons: {
       mdiHome,
       mdiCog,
-      mdiInformation
+      mdiInformation,
     }
   })
 }
