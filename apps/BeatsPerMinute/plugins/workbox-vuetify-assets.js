@@ -15,7 +15,7 @@ workbox.routing.registerRoute(
       new workbox.cacheableResponse.CacheableResponse({
         statuses: [0, 200],
       }),
-      new workbox.expiration.Expiration({
+      new workbox.expiration.CacheExpiration({
         maxAgeSeconds: 60 * 60 * 24 * 365,
         maxEntries: 30,
       }),
