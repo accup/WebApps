@@ -12,10 +12,10 @@ workbox.routing.registerRoute(
   new workbox.strategies.CacheFirst({
     cacheName: 'vuetify-assets-webfonts',
     plugins: [
-      new workbox.cacheableResponse.CacheableResponsePlugin({
+      new workbox.cacheableResponse.CacheableResponse({
         statuses: [0, 200],
       }),
-      new workbox.expiration.ExpirationPlugin({
+      new workbox.expiration.Expiration({
         maxAgeSeconds: 60 * 60 * 24 * 365,
         maxEntries: 30,
       }),
