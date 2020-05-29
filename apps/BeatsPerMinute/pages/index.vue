@@ -50,7 +50,8 @@ export default {
     const beatEstimator = new BeatEstimator(
       beginBpm / 60.0,
       endBpm / 60.0,
-      Math.round((endBpm - beginBpm) / bpmStep)
+      1 + Math.round((endBpm - beginBpm) / bpmStep),
+      true
     );
     this.$options.beatEstimator = beatEstimator;
 
