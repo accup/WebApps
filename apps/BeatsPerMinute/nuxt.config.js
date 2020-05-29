@@ -80,7 +80,8 @@ export default {
     manifest: {
       name: 'Beats Per Minute',
       short_name: 'BPM',
-      lang: 'ja'
+      lang: 'ja',
+      start_url: rootPageDir
     }
   },
   /*
