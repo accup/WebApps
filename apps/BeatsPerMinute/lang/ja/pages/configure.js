@@ -4,6 +4,9 @@ export default {
   maximumOfBpm: "BPM 最大値",
   bpmRange: "BPMの計測範囲",
   bpmRangeDescription: '（有効範囲：{0}～{1} BPM）',
+  bpmPrecision: "BPMの計測精度",
+  bpmPrecisionDescription: '（有効範囲：小数以下{0}～{1}桁）',
+  bpmDecimalDigits: "小数以下桁数",
 
   save: "保存",
   restore: "元に戻す",

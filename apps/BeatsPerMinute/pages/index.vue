@@ -12,9 +12,16 @@
       </div>
     </div>
     <div id="bpmViewer">
-      <div id="bpmTextWrapper" class="display-2">
-        {{ (bps * 60.0).toFixed() }}
+      <div
+        id="bpmTextWrapper"
+        v-if="0 < bps">
+        {{ (bps * 60.0).toFixed(bpmPrecision) }}
         <span class="display-1">BPM</span>
+      </div>
+      <div
+        id="clickTextWrapper"
+        v-else>
+        {{ $t('pages.index.clickBeatButtonOrPressSpaceKey') }}
       </div>
     </div>
     <div
@@ -45,12 +52,12 @@ export default {
   data () {
     const beginBpm = this.$store.state.configure.bpmRange.min;
     const endBpm = this.$store.state.configure.bpmRange.max;
-    const bpmStep = this.$store.state.configure.bpmStep;
+    const bpmPrecision = this.$store.state.configure.bpmPrecision;
 
     const beatEstimator = new BeatEstimator(
       beginBpm / 60.0,
       endBpm / 60.0,
-      1 + Math.round((endBpm - beginBpm) / bpmStep),
+      1 + Math.round((endBpm - beginBpm) * Math.pow(10, bpmPrecision)),
       true
     );
     this.$options.beatEstimator = beatEstimator;
@@ -59,6 +66,7 @@ export default {
       bps: beatEstimator.estimatedBps,
       beatCount: 0,
       beatPhase: 0.0,
+      bpmPrecision: bpmPrecision,
       isBeatButtonActive: false
     }
   },
@@ -78,6 +86,14 @@ export default {
     }
 
     this.$nextTick(updateBeatCircleLoop);
+  },
+  beforeMount () {
+    window.addEventListener('keydown', this.windowKeydownEventListener);
+    window.addEventListener('keyup', this.windowKeyUpEventListener);
+  },
+  beforeDestroy () {
+    window.removeEventListener('keydown', this.windowKeydownEventListener);
+    window.removeEventListener('keyup', this.windowKeyUpEventListener);
   },
   methods: {
     activateBeatButton() {
@@ -122,6 +138,25 @@ export default {
         phase += 1.0;
       }
       this.beatPhase = phase;
+    },
+
+    windowKeydownEventListener (e) {
+      e.preventDefault();
+
+      switch (e.code) {
+      case 'Space':
+        this.activateBeatButton();
+        break;
+      }
+    },
+    windowKeyUpEventListener (e) {
+      e.preventDefault();
+
+      switch (e.code) {
+      case 'Space':
+        this.deactivateBeatButton();
+        break;
+      }
     }
   }
 }
@@ -158,7 +193,11 @@ main {
 
     #bpmTextWrapper {
       color: white;
-      font-size: 2.4em;
+      font-size: 3.0em;
+    }
+    #clickTextWrapper {
+      color: white;
+      font-size: 1.5em;
     }
   }
 

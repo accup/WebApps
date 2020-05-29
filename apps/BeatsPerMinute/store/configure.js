@@ -3,7 +3,7 @@ export const state = () => ({
     min: 60,
     max: 240,
   },
-  bpmStep: 1,
+  bpmPrecision: 0,
 })
 
 
@@ -12,7 +12,7 @@ export const mutations = {
     state.bpmRange.min = min;
     state.bpmRange.max = max;
   },
-  setBpmStep (state, step) {
-    state.bpmStep = step;
+  setBpmPrecision (state, precision) {
+    state.bpmPrecision = precision;
   },
 }

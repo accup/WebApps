@@ -13,6 +13,7 @@
           <v-text-field
             v-model.number="bpmRange.min"
             type="number"
+            :min="bpmRangeLimits.min" :max="bpmRangeLimits.max"
             :error="0 < bpmRangeMinErrorNumber"
             :error-messages="[
               '',
@@ -25,6 +26,7 @@
           <v-text-field
             v-model.number="bpmRange.max"
             type="number"
+            :min="bpmRangeLimits.min" :max="bpmRangeLimits.max"
             :error="0 < bpmRangeMaxErrorNumber"
             :error-messages="[
               '',
@@ -34,6 +36,20 @@
               $t('pages.configure.invalids.beGreaterThanOrEqual', [bpmRange.min]),
             ][bpmRangeMaxErrorNumber]"
             :label="$t('pages.configure.maximumOfBpm')"/>
+
+          <p>{{ $t('pages.configure.bpmPrecision') }}{{ $t('pages.configure.bpmPrecisionDescription', [bpmPrecisionLimits.min, bpmPrecisionLimits.max]) }}</p>
+          <v-text-field
+            v-model.number="bpmPrecision"
+            type="number"
+            :min="bpmPrecisionLimits.min" :max="bpmPrecisionLimits.max"
+            :error="0 < bpmPrecisionErrorNumber"
+            :error-messages="[
+              '',
+              $t('pages.configure.invalids.beFilled'),
+              $t('pages.configure.invalids.beGreaterThanOrEqual', [bpmPrecisionLimits.min]),
+              $t('pages.configure.invalids.beLessThanOrEqual', [bpmPrecisionLimits.max])
+            ][bpmPrecisionErrorNumber]"
+            :label="$t('pages.configure.bpmDecimalDigits')"/>
           <v-btn
             :disabled="!isConfigurationValid || !isConfigurationModified"
             @click="save"
@@ -56,18 +72,21 @@
 <script>
 export default {
   data () {
-    console.log(this.$store.state);
     return {
       isConfigurationValid: true,
       bpmRange: {
         min: this.$store.state.configure.bpmRange.min,
         max: this.$store.state.configure.bpmRange.max
       },
-      bpmStep: this.$store.state.configure.bpmStep,
+      bpmPrecision: this.$store.state.configure.bpmPrecision,
 
       bpmRangeLimits: {
         min: 1,
         max: 360
+      },
+      bpmPrecisionLimits: {
+        min: 0,
+        max: 2
       }
     }
   },
@@ -76,7 +95,7 @@ export default {
       return (
         this.bpmRange.min != this.$store.state.configure.bpmRange.min
         || this.bpmRange.max != this.$store.state.configure.bpmRange.max
-        || this.bpmStep != this.$store.state.configure.bpmStep
+        || this.bpmPrecision != this.$store.state.configure.bpmPrecision
       );
     },
 
@@ -103,32 +122,31 @@ export default {
         return 4;
       }
       return 0;
-    }
+    },
+    bpmPrecisionErrorNumber () {
+      if (this.bpmPrecision === '') {
+        return 1;
+      } else if (this.bpmPrecision < this.bpmPrecisionLimits.min) {
+        return 2;
+      } else if (this.bpmPrecisionLimits.max < this.bpmPrecision) {
+        return 3;
+      }
+      return 0;
+    },
   },
   methods: {
     save () {
       if (this.$refs.form.validate()) {
         // BPMの計測範囲をストア
-        console.log(this.bpmRange);
         this.$store.commit('configure/setBpmRange', this.bpmRange);
-        this.$store.commit('configure/setBpmStep', this.bpmStep);
+        this.$store.commit('configure/setBpmPrecision', this.bpmPrecision);
       }
     },
     restore () {
       // restore data
       this.bpmRange.min = this.$store.state.configure.bpmRange.min;
       this.bpmRange.max = this.$store.state.configure.bpmRange.max;
-      this.bpmStep = this.$store.state.configure.bpmStep;
-    },
-
-    beFilled (v) {
-      return v !== '';
-    },
-    beGreaterThanOrEqual(v, le) {
-      return le <= v;
-    },
-    beLessThanOrEqual(v, ge) {
-      return v <= ge;
+      this.bpmPrecision = this.$store.state.configure.bpmPrecision;
     },
   }
 }
