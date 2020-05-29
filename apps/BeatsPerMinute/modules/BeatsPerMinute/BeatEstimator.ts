@@ -19,20 +19,24 @@ export class BeatEstimator implements IBeatEstimator {
 	#estimatedAnchorTimeInSeconds : number = 0;
 
 	constructor(
-		beginBps : number,
-		endBps : number,
-		numOfBpsBins : number,
-		endPoint : boolean = false,
-		lowPassAlpha : number = 0.95
+    beginBps : number,
+    endBps : number,
+    numOfBpsBins : number,
+    endPoint : boolean = false,
+    lowPassAlpha : number = 0.95
 	) {
 		this.#lowPassAlpha = lowPassAlpha;
 
 		this.#bpsBins = new Float64Array(numOfBpsBins);
-		let endIndex = endPoint ? (this.#bpsBins.length - 1) : this.#bpsBins.length;
-		for (let index = 0; index < this.#bpsBins.length; index++) {
-			const bps = ((endIndex - index) * beginBps + index * endBps) / endIndex;
-			this.#bpsBins[index] = bps;
-		}
+		if (1 < this.#bpsBins.length) {
+      let endIndex = endPoint ? (this.#bpsBins.length - 1) : this.#bpsBins.length;
+      for (let index = 0; index < this.#bpsBins.length; index++) {
+        const bps = ((endIndex - index) * beginBps + index * endBps) / endIndex;
+        this.#bpsBins[index] = bps;
+      }
+    } else {
+      this.#bpsBins[0] = beginBps;
+    }
 
 		this.#beatSpinXs = new Float64Array(this.#bpsBins.length);
 		this.#beatSpinYs = new Float64Array(this.#bpsBins.length);
