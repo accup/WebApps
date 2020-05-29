@@ -15,7 +15,7 @@ export default {
   ** `generate` command configuration
   */
   generate: {
-    dir: '../../dist/BeatsPerMinute',
+    dir: `../../dist${rootPageDir}`,
     fallback: '404.html'
   },
   /*

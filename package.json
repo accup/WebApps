@@ -6,7 +6,7 @@
   "scripts": {
     "dev:BeatsPerMinute": "nuxt dev ./apps/BeatsPerMinute",
     "generate:BeatsPerMinute": "nuxt generate ./apps/BeatsPerMinute",
-    "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup"
+    "deploy": "push-dir --dir=dist/WebApps --branch=gh-pages --cleanup"
   },
   "repository": {
     "type": "git",
