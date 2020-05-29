@@ -13,22 +13,26 @@
           <v-text-field
             v-model.number="bpmRange.min"
             type="number"
-            :rules="[
-              v => beFilled(v) || $t('pages.configure.invalids.beFilled'),
-              v => beGreaterThanOrEqual(v, bpmRangeLimits.min) || $t('pages.configure.invalids.beGreaterThanOrEqual', [bpmRangeLimits.min]),
-              v => beLessThanOrEqual(v, bpmRange.max) || $t('pages.configure.invalids.beLessThanOrEqual', [bpmRange.max]),
-              v => beLessThanOrEqual(v, bpmRangeLimits.max) || $t('pages.configure.invalids.beLessThanOrEqual', [bpmRangeLimits.max]),
-            ]"
+            :error="0 < bpmRangeMinErrorNumber"
+            :error-messages="[
+              '',
+              $t('pages.configure.invalids.beFilled'),
+              $t('pages.configure.invalids.beGreaterThanOrEqual', [bpmRangeLimits.min]),
+              $t('pages.configure.invalids.beLessThanOrEqual', [bpmRangeLimits.max]),
+              $t('pages.configure.invalids.beLessThanOrEqual', [bpmRange.max]),
+            ][bpmRangeMinErrorNumber]"
             :label="$t('pages.configure.minimumOfBpm')"/>
           <v-text-field
             v-model.number="bpmRange.max"
             type="number"
-            :rules="[
-              v => beFilled(v) || $t('pages.configure.invalids.beFilled'),
-              v => beGreaterThanOrEqual(v, bpmRange.min) || $t('pages.configure.invalids.beGreaterThanOrEqual', [bpmRange.min]),
-              v => beGreaterThanOrEqual(v, bpmRangeLimits.min) || $t('pages.configure.invalids.beGreaterThanOrEqual', [bpmRangeLimits.min]),
-              v => beLessThanOrEqual(v, bpmRangeLimits.max) || $t('pages.configure.invalids.beLessThanOrEqual', [bpmRangeLimits.max]),
-            ]"
+            :error="0 < bpmRangeMaxErrorNumber"
+            :error-messages="[
+              '',
+              $t('pages.configure.invalids.beFilled'),
+              $t('pages.configure.invalids.beLessThanOrEqual', [bpmRangeLimits.max]),
+              $t('pages.configure.invalids.beGreaterThanOrEqual', [bpmRangeLimits.min]),
+              $t('pages.configure.invalids.beGreaterThanOrEqual', [bpmRange.min]),
+            ][bpmRangeMaxErrorNumber]"
             :label="$t('pages.configure.maximumOfBpm')"/>
           <v-btn
             :disabled="!isConfigurationValid || !isConfigurationModified"
@@ -74,6 +78,31 @@ export default {
         || this.bpmRange.max != this.$store.state.configure.bpmRange.max
         || this.bpmStep != this.$store.state.configure.bpmStep
       );
+    },
+
+    bpmRangeMinErrorNumber () {
+      if (this.bpmRange.min === '') {
+        return 1;
+      } else if (this.bpmRange.min < this.bpmRangeLimits.min) {
+        return 2;
+      } else if (this.bpmRangeLimits.max < this.bpmRange.min) {
+        return 3;
+      } else if (this.bpmRange.max < this.bpmRange.min) {
+        return 4;
+      }
+      return 0;
+    },
+    bpmRangeMaxErrorNumber () {
+      if (this.bpmRange.max === '') {
+        return 1;
+      } else if (this.bpmRangeLimits.max < this.bpmRange.max) {
+        return 2;
+      } else if (this.bpmRange.max < this.bpmRangeLimits.min) {
+        return 3;
+      } else if (this.bpmRange.max < this.bpmRange.min) {
+        return 4;
+      }
+      return 0;
     }
   },
   methods: {
@@ -93,7 +122,7 @@ export default {
     },
 
     beFilled (v) {
-      return v != '';
+      return v !== '';
     },
     beGreaterThanOrEqual(v, le) {
       return le <= v;
