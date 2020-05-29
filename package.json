@@ -6,6 +6,7 @@
   "scripts": {
     "dev:BeatsPerMinute": "nuxt dev ./apps/BeatsPerMinute",
     "generate:BeatsPerMinute": "nuxt generate ./apps/BeatsPerMinute",
+    "serve": "http-server ./dist/",
     "deploy": "push-dir --dir=dist/WebApps --branch=gh-pages --cleanup"
   },
   "repository": {
@@ -28,6 +29,7 @@
     "@mdi/js": "^5.1.45",
     "@nuxt/typescript-build": "^0.6.5",
     "@nuxtjs/vuetify": "^1.11.0",
+    "http-server": "^0.12.3",
     "node-sass": "^4.14.1",
     "push-dir": "^0.4.1",
     "sass-loader": "^8.0.2"
