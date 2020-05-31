@@ -1,6 +1,7 @@
 import colors from 'vuetify/es5/util/colors';
 
-const rootPageDir = '/WebApps/BeatsPerMinute/';
+const rootDirName = process.env.npm_package_config_rootDirName;
+const rootPageDir = `/${rootDirName}/BeatsPerMinute/`;
 
 
 export default {
