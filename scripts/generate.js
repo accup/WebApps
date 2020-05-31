@@ -44,20 +44,21 @@ fs.promises.readdir(appsDirName, { withFileTypes: true })
       default: 0
     }])
     .then(answers => {
-      spawn(
-        'nuxt',
-        [
-          'generate',
-          path.join(
-            appsDirName,
-            answers.appName
-          )
-        ],
-        {
-          stdio: 'inherit',
-          shell: true
-        }
-      );
+      command = 'nuxt';
+      args = [
+        'generate',
+        path.join(
+          appsDirName,
+          answers.appName
+        )
+      ];
+      options = {
+        stdio: 'inherit',
+        shell: true
+      };
+
+      console.log(`> ${command} ${args.map(arg => /\s/g.test(arg) ? arg.quote() : arg).join(' ')}`)
+      spawn(command, args, options);
     })
     .catch(err => Promise.reject(err.message))
   )
