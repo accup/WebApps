@@ -1,7 +1,14 @@
 import colors from 'vuetify/es5/util/colors';
 
-const rootDirName = process.env.npm_package_config_rootDirName;
-const rootPageDir = `/${rootDirName}/BeatsPerMinute/`;
+
+/*
+** Environment variables
+*/
+const env = {
+  appName: 'BeatsPerMinute',
+  rootDirName: process.env.npm_package_config_rootDirName,
+}
+const rootPageDir = `/${env.rootDirName}/${env.appName}/`;
 
 
 export default {
@@ -12,6 +19,10 @@ export default {
   router: {
     base: rootPageDir
   },
+  /*
+  ** Environment Variables
+  */
+  env,
   /*
   ** `generate` command configuration
   */
@@ -55,7 +66,8 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    { src: '~/plugins/localStorage.js', ssr: false }
+    { src: '~/plugins/localStorage.js', ssr: false },
+    { src: '~/plugins/versionController.js', ssr: false },
   ],
   /*
   ** Nuxt.js dev-modules
@@ -97,7 +109,9 @@ export default {
     ],
     defaultLocale: 'ja',
     lazy: true,
-    langDir: 'lang/'
+    langDir: 'lang/',
+
+    detectBrowserLanguage: false,
   },
   /*
   ** vuetify module configuration

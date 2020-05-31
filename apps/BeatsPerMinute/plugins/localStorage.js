@@ -3,9 +3,10 @@ import createPersistedState from 'vuex-persistedstate'
 
 export default ({store}) => {
   createPersistedState({
-    key: 'BeatsPerMinute',
+    key: process.env.appName,
     paths: [
-      'configure'
+      'version',
+      'configure',
     ]
   })(store)
 }

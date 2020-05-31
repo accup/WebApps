@@ -47,7 +47,8 @@
               '',
               $t('pages.configure.invalids.beFilled'),
               $t('pages.configure.invalids.beGreaterThanOrEqual', [bpmPrecisionLimits.min]),
-              $t('pages.configure.invalids.beLessThanOrEqual', [bpmPrecisionLimits.max])
+              $t('pages.configure.invalids.beLessThanOrEqual', [bpmPrecisionLimits.max]),
+              $t('pages.configure.invalids.beInteger'),
             ][bpmPrecisionErrorNumber]"
             :label="$t('pages.configure.bpmDecimalDigits')"/>
           <v-btn
@@ -64,7 +65,7 @@
         </v-form>
       </v-container>
 
-      <v-card-text>{{ $t('info.title') }}{{ $t('symbols.parentheses', [$t('pages.configure.about.version') + $t('info.versionNumber')]) }}</v-card-text>
+      <v-card-text>{{ $t('info.title') }}{{ $t('symbols.parentheses', [$t('pages.configure.about.version') + `${version.major}.${version.minor}.${version.patch}`]) }}</v-card-text>
     </v-card>
   </v-container>
 </template>
@@ -73,6 +74,8 @@
 export default {
   data () {
     return {
+      version: this.$store.state.version,
+
       isConfigurationValid: true,
       bpmRange: {
         min: this.$store.state.configure.bpmRange.min,
@@ -130,6 +133,8 @@ export default {
         return 2;
       } else if (this.bpmPrecisionLimits.max < this.bpmPrecision) {
         return 3;
+      } else if (!Number.isInteger(this.bpmPrecision)) {
+        return 4;
       }
       return 0;
     },
