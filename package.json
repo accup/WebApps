@@ -3,11 +3,16 @@
   "version": "1.0.0",
   "description": "徒然なるWebアプリケーションズ",
   "private": true,
+  "config": {
+    "rootDirName": "WebApps",
+    "appsDirName": "apps",
+    "deployBranchName": "gh-pages"
+  },
   "scripts": {
-    "dev:BeatsPerMinute": "nuxt dev ./apps/BeatsPerMinute",
-    "generate:BeatsPerMinute": "nuxt generate ./apps/BeatsPerMinute",
+    "develop": "node scripts/develop.js",
+    "generate": "node scripts/generate.js",
     "serve": "serve ./dist/",
-    "deploy": "push-dir --dir=dist/WebApps --branch=gh-pages --cleanup"
+    "deploy": "node scripts/deploy.js"
   },
   "repository": {
     "type": "git",
@@ -29,6 +34,7 @@
     "@mdi/js": "^5.1.45",
     "@nuxt/typescript-build": "^0.6.5",
     "@nuxtjs/vuetify": "^1.11.0",
+    "inquirer": "^7.1.0",
     "node-sass": "^4.14.1",
     "push-dir": "^0.4.1",
     "sass-loader": "^8.0.2",
