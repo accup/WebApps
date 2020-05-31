@@ -88,6 +88,7 @@ sw.*
 
 # Nuxt generate
 /dist/*
-!/dist/WebApps/
-/dist/WebApps/*
-!/dist/WebApps/.nojekyll
+!/dist/.nojekyll
+!/dist/*/
+/dist/*/*
+!/dist/*/.nojekyll
