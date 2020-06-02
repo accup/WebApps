@@ -12,9 +12,6 @@
           <v-card-text>
             {{ status.text }}
           </v-card-text>
-          <v-card-text>
-            {{ $t("layouts.error.MoveToCorrectPage") }}
-          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
