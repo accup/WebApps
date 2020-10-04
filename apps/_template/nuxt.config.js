@@ -14,7 +14,7 @@ const rootPageDir = `/${env.rootDirName}/${env.appName}/`;
 
 
 export default {
-  mode: 'spa',
+  ssr: false,
   /*
   ** Router configuration
   */
@@ -36,7 +36,7 @@ export default {
   ** Headers of the page
   */
   head: {
-    titleTemplate (title) {
+    titleTemplate(title) {
       const rootTitle = '_template';
 
       if (title == '') {
@@ -153,7 +153,7 @@ export default {
     /*
     ** You can extend webpack config here
     */
-    extend (config, ctx) {
+    extend(config, ctx) {
     }
   }
 }
