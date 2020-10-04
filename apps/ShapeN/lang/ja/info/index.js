@@ -1,3 +1,3 @@
 export default {
-  title: 'WebApps/_template',
+  title: 'WebApps/ShapeN',
 }

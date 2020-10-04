@@ -5,9 +5,9 @@ import colors from 'vuetify/es5/util/colors';
 ** Environment variables
 */
 const env = {
-  appName: '_template',
-  appTitle: '_template',
-  appShortTitle: '_template',
+  appName: 'ShapeN',
+  appTitle: 'ShapeN',
+  appShortTitle: 'ShapeN',
   rootDirName: process.env.npm_package_config_rootDirName,
 }
 const rootPageDir = `/${env.rootDirName}/${env.appName}/`;
@@ -37,7 +37,7 @@ export default {
   */
   head: {
     titleTemplate(title) {
-      const rootTitle = '_template';
+      const rootTitle = 'ShapeN';
 
       if (title == '') {
         return rootTitle;
