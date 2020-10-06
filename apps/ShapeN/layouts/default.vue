@@ -1,16 +1,9 @@
 <template>
-  <v-app>
-    <v-content>
-      <transition name="page">
-        <nuxt />
-      </transition>
-    </v-content>
-  </v-app>
+  <nuxt />
 </template>
 
 <script>
-export default {
-}
+export default {};
 </script>
 
 <style lang="scss">
@@ -25,12 +18,17 @@ html {
 }
 
 .page {
-  &-enter-active, &-leave-active {
-    transition: opacity .5s;
+  &-enter-active,
+  &-leave-active {
+    transition: opacity 0.5s;
   }
-  &-enter, &-leave-to {
+  &-enter,
+  &-leave-to {
     opacity: 0;
   }
 }
 
+.v-text-field .v-label {
+  overflow: visible !important;
+}
 </style>

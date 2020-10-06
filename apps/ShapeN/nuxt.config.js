@@ -56,6 +56,13 @@ export default {
     ]
   },
   /*
+  ** Auto component importing
+  */
+  components: [
+    '~/components',
+    { path: '~/components/shape-layer', prefix: 'sl' },
+  ],
+  /*
   ** Customize the progress-bar color
   */
   loading: { color: '#fff' },
