@@ -22,7 +22,7 @@
       </v-col>
       <v-col cols="4" sm="2">
         <number-field
-          v-model.number="shapeLayer.kernelSize[0]"
+          v-model.number="shapeLayer.kernelSize[1]"
           @update="$emit('update')"
           :label="$t('shapeLayer.conv.kernelSize', ['Y'])"
           :min="1"
@@ -31,7 +31,7 @@
       </v-col>
       <v-col cols="4" sm="2">
         <number-field
-          v-model.number="shapeLayer.kernelSize[1]"
+          v-model.number="shapeLayer.kernelSize[2]"
           @update="$emit('update')"
           :label="$t('shapeLayer.conv.kernelSize', ['X'])"
           :min="1"
