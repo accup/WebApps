@@ -32,6 +32,16 @@ export class Conv1d implements IShapeLayer {
 
         return [n_out, c_out, w_out];
     }
+
+    clone(): Conv1d {
+        return Object.assign(new Conv1d(), {
+            outChannels: this.outChannels,
+            kernelSize: this.kernelSize.slice(),
+            stride: this.stride.slice(),
+            padding: this.padding.slice(),
+            dilation: this.dilation.slice(),
+        });
+    }
 }
 
 
@@ -68,6 +78,17 @@ export class Conv2d implements IShapeLayer {
         if (w_out <= 0) return "shapeLayer.invalids.biggerKernelX";
 
         return [n_out, c_out, h_out, w_out];
+    }
+
+
+    clone(): Conv2d {
+        return Object.assign(new Conv2d(), {
+            outChannels: this.outChannels,
+            kernelSize: this.kernelSize.slice(),
+            stride: this.stride.slice(),
+            padding: this.padding.slice(),
+            dilation: this.dilation.slice(),
+        });
     }
 }
 
@@ -109,6 +130,16 @@ export class Conv3d implements IShapeLayer {
 
         return [n_out, c_out, d_out, h_out, w_out];
     }
+
+    clone(): Conv3d {
+        return Object.assign(new Conv3d(), {
+            outChannels: this.outChannels,
+            kernelSize: this.kernelSize.slice(),
+            stride: this.stride.slice(),
+            padding: this.padding.slice(),
+            dilation: this.dilation.slice(),
+        });
+    }
 }
 
 
@@ -143,6 +174,17 @@ export class ConvTranspose1d implements IShapeLayer {
         const w_out = (w_in - 1) * s[0] - 2 * p[0] + d[0] * (k[0] - 1) + o[0] + 1;
 
         return [n_out, c_out, w_out];
+    }
+
+    clone(): ConvTranspose1d {
+        return Object.assign(new ConvTranspose1d(), {
+            outChannels: this.outChannels,
+            kernelSize: this.kernelSize.slice(),
+            stride: this.stride.slice(),
+            padding: this.padding.slice(),
+            outputPadding: this.outputPadding.slice(),
+            dilation: this.dilation.slice(),
+        });
     }
 }
 
@@ -179,6 +221,17 @@ export class ConvTranspose2d implements IShapeLayer {
         const w_out = (w_in - 1) * s[1] - 2 * p[1] + d[1] * (k[1] - 1) + o[1] + 1;
 
         return [n_out, c_out, h_out, w_out];
+    }
+
+    clone(): ConvTranspose2d {
+        return Object.assign(new ConvTranspose2d(), {
+            outChannels: this.outChannels,
+            kernelSize: this.kernelSize.slice(),
+            stride: this.stride.slice(),
+            padding: this.padding.slice(),
+            outputPadding: this.outputPadding.slice(),
+            dilation: this.dilation.slice(),
+        });
     }
 }
 
@@ -217,5 +270,16 @@ export class ConvTranspose3d implements IShapeLayer {
         const w_out = (w_in - 1) * s[2] - 2 * p[2] + d[2] * (k[2] - 1) + o[2] + 1;
 
         return [n_out, c_out, d_out, h_out, w_out];
+    }
+
+    clone(): ConvTranspose3d {
+        return Object.assign(new ConvTranspose3d(), {
+            outChannels: this.outChannels,
+            kernelSize: this.kernelSize.slice(),
+            stride: this.stride.slice(),
+            padding: this.padding.slice(),
+            outputPadding: this.outputPadding.slice(),
+            dilation: this.dilation.slice(),
+        });
     }
 }
