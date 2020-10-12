@@ -15,4 +15,10 @@ export class Linear implements IShapeLayer {
         const h_in = shape[shape.length - 1];
         return [...shape.slice(0, -1), this.outFeatures];
     }
+
+    clone(): Linear {
+        return Object.assign(new Linear(), {
+            outFeatures: this.outFeatures,
+        });
+    }
 }
