@@ -19,7 +19,7 @@
     "url": "git+https://github.com/accup/WebApps.git"
   },
   "author": "Accup",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/accup/WebApps/issues"
   },
