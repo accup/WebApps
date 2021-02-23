@@ -94,7 +94,8 @@ export default {
       name: 'Beats Per Minute',
       short_name: 'BPM',
       lang: 'ja',
-      start_url: rootPageDir
+      start_url: rootPageDir,
+      scope: rootPageDir
     }
   },
   /*

@@ -36,7 +36,7 @@ export default {
   ** Headers of the page
   */
   head: {
-    titleTemplate (title) {
+    titleTemplate(title) {
       const rootTitle = 'Sigval';
 
       if (title == '') {
@@ -96,7 +96,8 @@ export default {
       name: env.appTitle,
       short_name: env.appShortTitle,
       lang: 'ja',
-      start_url: rootPageDir
+      start_url: rootPageDir,
+      scope: rootPageDir
     }
   },
   /*
@@ -142,7 +143,7 @@ export default {
     /*
     ** You can extend webpack config here
     */
-    extend (config, ctx) {
+    extend(config, ctx) {
     }
   }
 }

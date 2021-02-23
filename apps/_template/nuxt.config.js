@@ -96,7 +96,8 @@ export default {
       name: env.appTitle,
       short_name: env.appShortTitle,
       lang: 'ja',
-      start_url: rootPageDir
+      start_url: rootPageDir,
+      scope: rootPageDir
     }
   },
   /*
