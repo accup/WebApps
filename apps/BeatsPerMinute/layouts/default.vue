@@ -1,10 +1,10 @@
 <template>
   <v-app>
-    <v-content>
+    <v-main>
       <transition name="page">
         <nuxt />
       </transition>
-    </v-content>
+    </v-main>
     <v-bottom-navigation
       app shift grow
       color="blue lighten-2"
