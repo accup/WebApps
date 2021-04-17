@@ -1,27 +1,15 @@
 <template>
-  <v-container
-    fluid
-    fill-height
-    class="pa-0 d-flex flex-column align-stretch"
-    >
+  <v-container fluid fill-height class="pa-0 d-flex flex-column align-stretch">
     <div id="beatViewer">
-      <div
-        id="beatCircle"
-        :style="{ opacity: 1.0 - 0.7 * beatPhase }"
-        >
-      </div>
+      <div id="beatCircle" :style="{ opacity: 1.0 - 0.7 * beatPhase }"></div>
     </div>
     <div id="bpmViewer">
-      <div
-        id="bpmTextWrapper"
-        v-if="0 < bps">
+      <div id="bpmTextWrapper" v-if="0 < bps">
         {{ (bps * 60.0).toFixed(bpmPrecision) }}
         <span class="display-1">BPM</span>
       </div>
-      <div
-        id="clickTextWrapper"
-        v-else>
-        {{ $t('pages.index.ClickBeatButtonOrPressSpaceKey') }}
+      <div id="clickTextWrapper" v-else>
+        {{ $t("pages.index.ClickBeatButtonOrPressSpaceKey") }}
       </div>
     </div>
     <div
@@ -30,11 +18,8 @@
       @mouseup.prevent="deactivateBeatButton"
       @touchstart.prevent="activateBeatButton"
       @touchend.prevent="deactivateBeatButton"
-      >
-      <div
-        id="beatButton"
-        :class="{ active: isBeatButtonActive }"
-        >
+    >
+      <div id="beatButton" :class="{ active: isBeatButtonActive }">
         {{ beatButtonText }}
       </div>
     </div>
@@ -42,24 +27,18 @@
 </template>
 
 <script>
-import { BeatEstimator } from '@/modules/BeatsPerMinute';
-
+import { BeatEstimator } from "@/modules/BeatsPerMinute";
 
 export default {
   beatEstimator: null,
   resetTimerId: null,
 
-  data () {
+  data() {
     const beginBpm = this.$store.state.configure.bpmRange.min;
     const endBpm = this.$store.state.configure.bpmRange.max;
     const bpmPrecision = this.$store.state.configure.bpmPrecision;
 
-    const beatEstimator = new BeatEstimator(
-      beginBpm / 60.0,
-      endBpm / 60.0,
-      1 + Math.round((endBpm - beginBpm) * Math.pow(10, bpmPrecision)),
-      true
-    );
+    const beatEstimator = new BeatEstimator(beginBpm / 60.0, endBpm / 60.0, 1 + Math.round((endBpm - beginBpm) * Math.pow(10, bpmPrecision)), true);
     this.$options.beatEstimator = beatEstimator;
 
     return {
@@ -67,33 +46,33 @@ export default {
       beatCount: 0,
       beatPhase: 0.0,
       bpmPrecision: bpmPrecision,
-      isBeatButtonActive: false
-    }
+      isBeatButtonActive: false,
+    };
   },
   computed: {
     beatButtonText() {
       if (this.beatCount == 0) {
-        return 'Beat';
+        return "Beat";
       } else {
         return `${this.beatCount}`;
       }
-    }
+    },
   },
   mounted() {
     const updateBeatCircleLoop = () => {
       this.updateBeatCircleScale();
       requestAnimationFrame(updateBeatCircleLoop);
-    }
+    };
 
     this.$nextTick(updateBeatCircleLoop);
   },
-  beforeMount () {
-    window.addEventListener('keydown', this.windowKeydownEventListener);
-    window.addEventListener('keyup', this.windowKeyUpEventListener);
+  beforeMount() {
+    window.addEventListener("keydown", this.windowKeydownEventListener);
+    window.addEventListener("keyup", this.windowKeyUpEventListener);
   },
-  beforeDestroy () {
-    window.removeEventListener('keydown', this.windowKeydownEventListener);
-    window.removeEventListener('keyup', this.windowKeyUpEventListener);
+  beforeDestroy() {
+    window.removeEventListener("keydown", this.windowKeydownEventListener);
+    window.removeEventListener("keyup", this.windowKeyUpEventListener);
   },
   methods: {
     activateBeatButton() {
@@ -140,26 +119,26 @@ export default {
       this.beatPhase = phase;
     },
 
-    windowKeydownEventListener (e) {
+    windowKeydownEventListener(e) {
       e.preventDefault();
 
       switch (e.code) {
-      case 'Space':
-        this.activateBeatButton();
-        break;
+        case "Space":
+          this.activateBeatButton();
+          break;
       }
     },
-    windowKeyUpEventListener (e) {
+    windowKeyUpEventListener(e) {
       e.preventDefault();
 
       switch (e.code) {
-      case 'Space':
-        this.deactivateBeatButton();
-        break;
+        case "Space":
+          this.deactivateBeatButton();
+          break;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -193,7 +172,7 @@ main {
 
     #bpmTextWrapper {
       color: white;
-      font-size: 3.0em;
+      font-size: 3em;
     }
     #clickTextWrapper {
       color: white;

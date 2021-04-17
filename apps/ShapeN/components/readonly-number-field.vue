@@ -1,12 +1,5 @@
 <template>
-  <v-text-field
-    :value="value"
-    :label="label"
-    readonly
-    hide-details
-    dense
-    @keyup.enter="$event.target.blur()"
-  />
+  <v-text-field :value="value" :label="label" readonly hide-details dense @keyup.enter="$event.target.blur()" />
 </template>
 
 <script>

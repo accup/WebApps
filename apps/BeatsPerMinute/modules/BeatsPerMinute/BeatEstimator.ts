@@ -4,39 +4,39 @@ import { IBeatEstimator } from './IBeatEstimator';
 /** ビート推定器の実装 */
 export class BeatEstimator implements IBeatEstimator {
 	/** BPS */
-	#bpsBins : Float64Array;
+	#bpsBins: Float64Array;
 	/** 最新のビート回転子の状態 */
-	#beatSpinXs : Float64Array;
+	#beatSpinXs: Float64Array;
 	/** 最新のビート回転子の状態 */
-	#beatSpinYs : Float64Array;
+	#beatSpinYs: Float64Array;
 	/** ローパスフィルタの係数（新しい値の反映のされにくさ） */
-	#lowPassAlpha : number;
+	#lowPassAlpha: number;
 	/** リセット状態 */
-	#isReset : boolean = true;
+	#isReset: boolean = true;
 	/** 推定されたBPS */
-	#estimatedBps : number = 0;
+	#estimatedBps: number = 0;
 	/** 推定された基準時刻 */
-	#estimatedAnchorTimeInSeconds : number = 0;
+	#estimatedAnchorTimeInSeconds: number = 0;
 
 	constructor(
-    beginBps : number,
-    endBps : number,
-    numOfBpsBins : number,
-    endPoint : boolean = false,
-    lowPassAlpha : number = 0.95
+		beginBps: number,
+		endBps: number,
+		numOfBpsBins: number,
+		endPoint: boolean = false,
+		lowPassAlpha: number = 0.95
 	) {
 		this.#lowPassAlpha = lowPassAlpha;
 
 		this.#bpsBins = new Float64Array(numOfBpsBins);
 		if (1 < this.#bpsBins.length) {
-      let endIndex = endPoint ? (this.#bpsBins.length - 1) : this.#bpsBins.length;
-      for (let index = 0; index < this.#bpsBins.length; index++) {
-        const bps = ((endIndex - index) * beginBps + index * endBps) / endIndex;
-        this.#bpsBins[index] = bps;
-      }
-    } else {
-      this.#bpsBins[0] = beginBps;
-    }
+			let endIndex = endPoint ? (this.#bpsBins.length - 1) : this.#bpsBins.length;
+			for (let index = 0; index < this.#bpsBins.length; index++) {
+				const bps = ((endIndex - index) * beginBps + index * endBps) / endIndex;
+				this.#bpsBins[index] = bps;
+			}
+		} else {
+			this.#bpsBins[0] = beginBps;
+		}
 
 		this.#beatSpinXs = new Float64Array(this.#bpsBins.length);
 		this.#beatSpinYs = new Float64Array(this.#bpsBins.length);
@@ -58,7 +58,8 @@ export class BeatEstimator implements IBeatEstimator {
 		return this.#estimatedAnchorTimeInSeconds;
 	}
 
-	beat(now_time_in_seconds : number) {;
+	beat(now_time_in_seconds: number) {
+		;
 		const now_time_in_radians = 2 * Math.PI * now_time_in_seconds;
 
 		if (this.#isReset) {
