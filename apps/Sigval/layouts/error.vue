@@ -1,14 +1,14 @@
 <template>
   <v-container fluid fill-height>
     <v-row justify="center">
-      <v-col cols=12 sm=8>
+      <v-col cols="12" sm="8">
         <v-card>
           <v-card-title>
             {{ status.code }}
             -
             {{ status.message }}
           </v-card-title>
-          <v-divider/>
+          <v-divider />
           <v-card-text>
             {{ status.text }}
           </v-card-text>
@@ -23,10 +23,10 @@ export default {
   props: {
     error: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
-  data () {
+  data() {
     const code = this.error.statusCode;
     let message;
     let text;
@@ -45,14 +45,14 @@ export default {
       status: {
         code,
         message,
-        text
-      }
-    }
+        text,
+      },
+    };
   },
-  head () {
+  head() {
     return {
-      title: `${this.status.code} - ${this.status.message}`
-    }
-  }
-}
+      title: `${this.status.code} - ${this.status.message}`,
+    };
+  },
+};
 </script>

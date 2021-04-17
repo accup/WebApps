@@ -8,11 +8,11 @@ export const state = () => ({
 
 
 export const mutations = {
-  setBpmRange (state, {min, max}) {
+  setBpmRange(state, { min, max }) {
     state.bpmRange.min = min;
     state.bpmRange.max = max;
   },
-  setBpmPrecision (state, precision) {
+  setBpmPrecision(state, precision) {
     state.bpmPrecision = precision;
   },
 }

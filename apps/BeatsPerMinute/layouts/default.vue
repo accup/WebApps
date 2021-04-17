@@ -5,11 +5,7 @@
         <nuxt />
       </transition>
     </v-main>
-    <v-bottom-navigation
-      app shift grow
-      color="blue lighten-2"
-      background-color="transparent"
-      >
+    <v-bottom-navigation app shift grow color="blue lighten-2" background-color="transparent">
       <v-btn nuxt :to="localePath('/')">
         <span>BPM</span>
         <v-icon>{{ icons.iconBpm }}</v-icon>
@@ -23,9 +19,8 @@
 </template>
 
 <script>
-import { mdiHome, mdiCog, mdiInformation } from '@mdi/js';
-import { iconBpm } from '@/modules/icons';
-
+import { mdiHome, mdiCog, mdiInformation } from "@mdi/js";
+import { iconBpm } from "@/modules/icons";
 
 export default {
   data: () => ({
@@ -34,9 +29,9 @@ export default {
       mdiCog,
       mdiInformation,
       iconBpm,
-    }
-  })
-}
+    },
+  }),
+};
 </script>
 
 <style lang="scss">
@@ -51,12 +46,13 @@ html {
 }
 
 .page {
-  &-enter-active, &-leave-active {
-    transition: opacity .5s;
+  &-enter-active,
+  &-leave-active {
+    transition: opacity 0.5s;
   }
-  &-enter, &-leave-to {
+  &-enter,
+  &-leave-to {
     opacity: 0;
   }
 }
-
 </style>

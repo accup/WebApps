@@ -7,23 +7,14 @@
       <v-container>
         <v-row align="center" justify="center" dense>
           <template v-for="(size, index) in inputShape">
-            <v-col
-              cols="auto"
-              v-if="index != 0"
-              class="text-center"
-              :key="2 * index"
-            >
+            <v-col cols="auto" v-if="index != 0" class="text-center" :key="2 * index">
               <span>×</span>
             </v-col>
             <v-col cols="auto" :key="2 * index + 1">
               <number-field
                 v-model.number="inputShape[index]"
                 @update="evaluateShape()"
-                :label="
-                  0 < layers.length
-                    ? layers[0].instance.getShapeLabel(inputShape.length, index)
-                    : ''
-                "
+                :label="0 < layers.length ? layers[0].instance.getShapeLabel(inputShape.length, index) : ''"
                 class="shape-item"
                 style="width: 80px"
               />
@@ -32,14 +23,7 @@
           <v-col cols="auto" class="text-left">
             <v-tooltip top open-delay="850">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  icon
-                  color="green"
-                  @click="pushSize"
-                  v-bind="attrs"
-                  v-on="on"
-                  small
-                >
+                <v-btn icon color="green" @click="pushSize" v-bind="attrs" v-on="on" small>
                   <v-icon>{{ icons.mdiPlusCircle }}</v-icon>
                 </v-btn>
               </template>
@@ -47,14 +31,7 @@
             </v-tooltip>
             <v-tooltip top open-delay="850">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  icon
-                  color="green"
-                  @click="popSize"
-                  v-bind="attrs"
-                  v-on="on"
-                  small
-                >
+                <v-btn icon color="green" @click="popSize" v-bind="attrs" v-on="on" small>
                   <v-icon>{{ icons.mdiMinusCircle }}</v-icon>
                 </v-btn>
               </template>
@@ -75,19 +52,11 @@
                     <v-row>
                       <v-tooltip bottom open-delay="850">
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn
-                            @click="insertShapeLayer(index)"
-                            v-bind="attrs"
-                            v-on="on"
-                            color="blue"
-                            icon
-                          >
+                          <v-btn @click="insertShapeLayer(index)" v-bind="attrs" v-on="on" color="blue" icon>
                             <v-icon>{{ icons.mdiPlusCircle }}</v-icon>
                           </v-btn>
                         </template>
-                        <span>{{
-                          $t("pages.index.tooltips.insertLayer")
-                        }}</span>
+                        <span>{{ $t("pages.index.tooltips.insertLayer") }}</span>
                       </v-tooltip>
                       <v-tooltip bottom open-delay="850">
                         <template v-slot:activator="{ on, attrs }">
@@ -102,39 +71,22 @@
                             <v-icon>{{ icons.mdiContentPaste }}</v-icon>
                           </v-btn>
                         </template>
-                        <span>{{
-                          $t("pages.index.tooltips.insertCopiedLayer")
-                        }}</span>
+                        <span>{{ $t("pages.index.tooltips.insertCopiedLayer") }}</span>
                       </v-tooltip>
                       <v-tooltip bottom open-delay="850">
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn
-                            @click="removeShapeLayer(index)"
-                            v-bind="attrs"
-                            v-on="on"
-                            color="red"
-                            icon
-                          >
+                          <v-btn @click="removeShapeLayer(index)" v-bind="attrs" v-on="on" color="red" icon>
                             <v-icon>{{ icons.mdiMinusCircle }}</v-icon>
                           </v-btn>
                         </template>
-                        <span>{{
-                          $t("pages.index.tooltips.removeLayer")
-                        }}</span>
+                        <span>{{ $t("pages.index.tooltips.removeLayer") }}</span>
                       </v-tooltip>
                     </v-row>
                   </v-col>
                 </v-row>
               </v-card>
               <v-card outlined>
-                <v-row
-                  flat
-                  no-gutters
-                  class="grey lighten-2"
-                  justify="end"
-                  align="center"
-                  dense
-                >
+                <v-row flat no-gutters class="grey lighten-2" justify="end" align="center" dense>
                   <v-col cols="auto">
                     <v-select
                       v-model="layer.name"
@@ -150,13 +102,7 @@
                   <v-col cols="auto">
                     <v-tooltip bottom open-delay="850">
                       <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          @click="copyShapeLayer(index)"
-                          v-bind="attrs"
-                          v-on="on"
-                          large
-                          icon
-                        >
+                        <v-btn @click="copyShapeLayer(index)" v-bind="attrs" v-on="on" large icon>
                           <v-icon>{{ icons.mdiContentCopy }}</v-icon>
                         </v-btn>
                       </template>
@@ -182,11 +128,7 @@
                     </v-tooltip>
                   </v-col>
                 </v-row>
-                <component
-                  :is="layer.component"
-                  :shape-layer="layer.instance"
-                  @update="evaluateShape(index)"
-                />
+                <component :is="layer.component" :shape-layer="layer.instance" @update="evaluateShape(index)" />
               </v-card>
               <v-card color="transparent" flat>
                 <v-row align="center" justify="center" dense>
@@ -198,20 +140,14 @@
               <v-card v-if="layer.result.invalid" flat>
                 <v-row justify="center" dense>
                   <v-col cols="auto" class="text-center">
-                    <span class="error--text">{{
-                      $t(layer.result.errorMessage)
-                    }}</span>
+                    <span class="error--text">{{ $t(layer.result.errorMessage) }}</span>
                   </v-col>
                 </v-row>
               </v-card>
               <v-card v-else color="transparent" flat>
                 <v-row align="center" justify="center" dense>
                   <template v-for="(size, sizeIndex) in layer.result.shape">
-                    <v-col
-                      cols="auto"
-                      v-if="sizeIndex != 0"
-                      :key="sizeIndex * 2"
-                    >
+                    <v-col cols="auto" v-if="sizeIndex != 0" :key="sizeIndex * 2">
                       <span>×</span>
                     </v-col>
                     <v-col cols="auto" :key="sizeIndex * 2 + 1">
@@ -219,10 +155,7 @@
                         :value="layer.result.shape[sizeIndex]"
                         :label="
                           index + 1 < layers.length
-                            ? layers[index + 1].instance.getShapeLabel(
-                                layer.result.shape.length,
-                                sizeIndex
-                              )
+                            ? layers[index + 1].instance.getShapeLabel(layer.result.shape.length, sizeIndex)
                             : ''
                         "
                         style="width: 80px"
@@ -238,13 +171,7 @@
           <v-col cols="auto">
             <v-tooltip bottom open-delay="850">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  @click="insertShapeLayer(layers.length)"
-                  v-bind="attrs"
-                  v-on="on"
-                  color="blue"
-                  icon
-                >
+                <v-btn @click="insertShapeLayer(layers.length)" v-bind="attrs" v-on="on" color="blue" icon>
                   <v-icon>{{ icons.mdiPlusCircle }}</v-icon>
                 </v-btn>
               </template>
@@ -273,13 +200,7 @@
 </template>
 
 <script>
-import {
-  mdiArrowDown,
-  mdiPlusCircle,
-  mdiMinusCircle,
-  mdiContentCopy,
-  mdiContentPaste,
-} from "@mdi/js";
+import { mdiArrowDown, mdiPlusCircle, mdiMinusCircle, mdiContentCopy, mdiContentPaste } from "@mdi/js";
 import * as sl from "~/modules/shape-layer";
 
 const shapeLayers = {
@@ -428,10 +349,7 @@ export default {
       this.evaluateShape(index);
     },
     evaluateShape(start_index = 0) {
-      let shape =
-        start_index == 0
-          ? this.inputShape
-          : this.layers[start_index - 1].result.shape;
+      let shape = start_index == 0 ? this.inputShape : this.layers[start_index - 1].result.shape;
 
       for (let index = start_index; index < this.layers.length; ++index) {
         const layer = this.layers[index];
