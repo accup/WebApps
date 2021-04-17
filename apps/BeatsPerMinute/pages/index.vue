@@ -21,7 +21,7 @@
       <div
         id="clickTextWrapper"
         v-else>
-        {{ $t('pages.index.clickBeatButtonOrPressSpaceKey') }}
+        {{ $t('pages.index.ClickBeatButtonOrPressSpaceKey') }}
       </div>
     </div>
     <div

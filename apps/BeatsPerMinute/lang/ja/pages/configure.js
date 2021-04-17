@@ -16,9 +16,9 @@ export default {
   },
 
   invalids: {
-    "beFilled": "必須項目です",
-    "beGreaterThanOrEqual": "{0}以上の値を指定してください",
-    "beLessThanOrEqual": "{0}以下の値を指定してください",
-    "beInteger": "整数を指定してください",
+    BeFilled: "必須項目です",
+    BeGreaterThanOrEqual: "{0}以上の値を指定してください",
+    BeLessThanOrEqual: "{0}以下の値を指定してください",
+    BeInteger: "整数を指定してください",
   }
 }

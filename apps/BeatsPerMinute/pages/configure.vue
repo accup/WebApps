@@ -17,10 +17,10 @@
             :error="0 < bpmRangeMinErrorNumber"
             :error-messages="[
               '',
-              $t('pages.configure.invalids.beFilled'),
-              $t('pages.configure.invalids.beGreaterThanOrEqual', [bpmRangeLimits.min]),
-              $t('pages.configure.invalids.beLessThanOrEqual', [bpmRangeLimits.max]),
-              $t('pages.configure.invalids.beLessThanOrEqual', [bpmRange.max]),
+              $t('pages.configure.invalids.BeFilled'),
+              $t('pages.configure.invalids.BeGreaterThanOrEqual', [bpmRangeLimits.min]),
+              $t('pages.configure.invalids.BeLessThanOrEqual', [bpmRangeLimits.max]),
+              $t('pages.configure.invalids.BeLessThanOrEqual', [bpmRange.max]),
             ][bpmRangeMinErrorNumber]"
             :label="$t('pages.configure.minimumOfBpm')"/>
           <v-text-field
@@ -30,10 +30,10 @@
             :error="0 < bpmRangeMaxErrorNumber"
             :error-messages="[
               '',
-              $t('pages.configure.invalids.beFilled'),
-              $t('pages.configure.invalids.beLessThanOrEqual', [bpmRangeLimits.max]),
-              $t('pages.configure.invalids.beGreaterThanOrEqual', [bpmRangeLimits.min]),
-              $t('pages.configure.invalids.beGreaterThanOrEqual', [bpmRange.min]),
+              $t('pages.configure.invalids.BeFilled'),
+              $t('pages.configure.invalids.BeLessThanOrEqual', [bpmRangeLimits.max]),
+              $t('pages.configure.invalids.BeGreaterThanOrEqual', [bpmRangeLimits.min]),
+              $t('pages.configure.invalids.BeGreaterThanOrEqual', [bpmRange.min]),
             ][bpmRangeMaxErrorNumber]"
             :label="$t('pages.configure.maximumOfBpm')"/>
 
@@ -45,10 +45,10 @@
             :error="0 < bpmPrecisionErrorNumber"
             :error-messages="[
               '',
-              $t('pages.configure.invalids.beFilled'),
-              $t('pages.configure.invalids.beGreaterThanOrEqual', [bpmPrecisionLimits.min]),
-              $t('pages.configure.invalids.beLessThanOrEqual', [bpmPrecisionLimits.max]),
-              $t('pages.configure.invalids.beInteger'),
+              $t('pages.configure.invalids.BeFilled'),
+              $t('pages.configure.invalids.BeGreaterThanOrEqual', [bpmPrecisionLimits.min]),
+              $t('pages.configure.invalids.BeLessThanOrEqual', [bpmPrecisionLimits.max]),
+              $t('pages.configure.invalids.BeInteger'),
             ][bpmPrecisionErrorNumber]"
             :label="$t('pages.configure.bpmDecimalDigits')"/>
           <v-btn
