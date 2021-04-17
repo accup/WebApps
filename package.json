@@ -12,7 +12,8 @@
     "develop": "node scripts/develop.js",
     "generate": "node scripts/generate.js",
     "serve": "serve ./dist/",
-    "deploy": "node scripts/deploy.js"
+    "deploy": "node scripts/deploy.js",
+    "catch-up-with": "node scripts/catch_up_with.js"
   },
   "repository": {
     "type": "git",
