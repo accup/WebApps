@@ -26,7 +26,7 @@
   "homepage": "https://github.com/accup/WebApps#readme",
   "dependencies": {
     "@nuxtjs/pwa": "^3.0.2",
-    "nuxt": "^2.14.6",
+    "nuxt": "^2.15.4",
     "nuxt-i18n": "^6.15.1",
     "vuex-persistedstate": "^3.1.0"
   },
