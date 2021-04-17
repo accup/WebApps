@@ -1,3 +1,3 @@
 export default {
-  clickBeatButtonOrPressSpaceKey: "Click Beat / Press Space"
+  ClickBeatButtonOrPressSpaceKey: "Click Beat / Press Space"
 }
