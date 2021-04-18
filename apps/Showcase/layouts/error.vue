@@ -1,24 +1,15 @@
 <template>
-  <v-container fluid fill-height>
-    <v-row justify="center">
-      <v-col cols="12" sm="8">
-        <v-card>
-          <v-card-title>
-            {{ status.code }}
-            -
-            {{ status.message }}
-          </v-card-title>
-          <v-divider />
-          <v-card-text>
-            {{ status.text }}
-          </v-card-text>
-          <v-card-text>
-            {{ $t("layouts.error.MoveToCorrectPage") }}
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+  <main>
+    {{ status.code }}
+    -
+    {{ status.message }}
+    <hr />
+    {{ status.text }}
+    <hr />
+    <nuxt-link :to="localePath('/')">
+      {{ $t("layouts.error.MoveToCorrectPage") }}
+    </nuxt-link>
+  </main>
 </template>
 
 <script>
