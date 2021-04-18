@@ -91,6 +91,10 @@ export default {
       {
         code: 'ja',
         file: 'ja/index.js'
+      },
+      {
+        code: 'en',
+        file: 'en/index.js'
       }
     ],
     defaultLocale: 'ja',

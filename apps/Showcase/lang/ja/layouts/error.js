@@ -1,3 +1,3 @@
 export default {
-    MoveToCorrectPage: "元のページに移動",
+    MoveToCorrectPage: "トップページに移動",
 }

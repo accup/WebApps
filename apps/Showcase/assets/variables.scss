@@ -1,0 +1,47 @@
+$breakpoints: (
+    xs: 576px,
+    sm: 768px,
+    md: 992px,
+    lg: 1200px,
+    xl: 1400px,
+);
+
+$containers: (
+    xs: 540px,
+    sm: 720px,
+    md: 960px,
+    lg: 1140px,
+    xl: 1320px,
+);
+
+@function breakpoint-size($size) {
+    @return if(map-has-key($breakpoints, $size), map-get($breakpoints, $size), $size);
+}
+
+@mixin breakpoint($min: null, $max: null) {
+    @if $min and $max {
+        @media (min-width: breakpoint-size($min)) and (max-width: breakpoint-size($max)) {
+            & {
+                @content;
+            }
+        }
+    }
+    @else if $min {
+        @media (min-width: breakpoint-size($min)) {
+            & {
+                @content;
+            }
+        }
+    }
+    @else if $max {
+        @media (max-width: breakpoint-size($max)) {
+            & {
+                @content;
+            }
+        }
+    }
+}
+
+@function container-size($size) {
+    @return map-get($containers, $size);
+}

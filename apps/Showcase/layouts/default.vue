@@ -1,9 +1,7 @@
 <template>
-  <main>
-    <transition name="page">
-      <nuxt />
-    </transition>
-  </main>
+  <transition name="page">
+    <nuxt />
+  </transition>
 </template>
 
 <script>
@@ -11,6 +9,10 @@ export default {};
 </script>
 
 <style lang="scss">
+body {
+  background-color: #fcfcfc;
+}
+
 .page {
   &-enter-active,
   &-leave-active {
