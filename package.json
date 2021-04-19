@@ -36,9 +36,9 @@
     "@nuxt/typescript-build": "^0.6.7",
     "@nuxtjs/vuetify": "^1.11.2",
     "inquirer": "^7.3.3",
-    "node-sass": "^4.14.1",
     "push-dir": "^0.4.1",
-    "sass-loader": "^8.0.2",
+    "sass": "^1.32.10",
+    "sass-loader": "^11.0.1",
     "serve": "^11.3.2"
   }
 }
