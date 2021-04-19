@@ -38,7 +38,7 @@
     "inquirer": "^7.3.3",
     "push-dir": "^0.4.1",
     "sass": "^1.32.10",
-    "sass-loader": "^11.0.1",
+    "sass-loader": "^10.1.1",
     "serve": "^11.3.2"
   }
 }
