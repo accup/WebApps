@@ -10,7 +10,7 @@ export default {};
 
 <style lang="scss">
 body {
-  background-color: #fcfcfc;
+  background-color: #202024;
 }
 
 .page {

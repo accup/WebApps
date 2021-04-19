@@ -1,6 +1,3 @@
-import colors from 'vuetify/es5/util/colors';
-
-
 /*
 ** Environment variables
 */
@@ -102,6 +99,11 @@ export default {
     langDir: 'lang/',
 
     detectBrowserLanguage: false,
+
+    vueI18n: {
+      fallbackLocale: 'ja',
+      silentFallbackWarn: true,
+    },
   },
   /*
   ** Build configuration
