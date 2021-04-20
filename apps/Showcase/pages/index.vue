@@ -9,7 +9,10 @@
           <a :href="item.href" target="_blank" rel="noopener noreferrer" :key="item.id">
             <li>
               <div class="item-header">
-                <h2><img :src="item.icon" v-if="item.icon" />{{ $t(`pages.index.items.${item.id}.name`) }}</h2>
+                <h2>
+                  <!-- <img :src="item.icon" v-if="item.icon" /> -->
+                  {{ $t(`pages.index.items.${item.id}.name`) }}
+                </h2>
               </div>
               <div class="item-text">
                 <p>{{ $t(`pages.index.items.${item.id}.description`) }}</p>
