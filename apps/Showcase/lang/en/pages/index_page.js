@@ -1,6 +1,9 @@
 export default {
     Portfolio: "Portfolio",
 
+    visitPage: "visit to the page",
+    visitDemoPage: "visit to the demo page",
+
     items: {
         BeatsPerMinute: {
             description: 'Robust BPM measuring tool against forgetting to press the beat',

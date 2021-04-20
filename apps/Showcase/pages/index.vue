@@ -7,15 +7,17 @@
       <ul>
         <template v-for="item in items">
           <a :href="item.href" target="_blank" rel="noopener noreferrer" :key="item.id">
-            <li :class="{ 'list-item-rounded': 'href' in item }">
-              <div>
+            <li>
+              <div class="item-header">
                 <h2><img :src="item.icon" v-if="item.icon" />{{ $t(`pages.index.items.${item.id}.name`) }}</h2>
               </div>
-              <div>
+              <div class="item-text">
                 <p>{{ $t(`pages.index.items.${item.id}.description`) }}</p>
-                <div v-if="'href' in item"></div>
+                <div class="item-visit-page" v-if="'href' in item">
+                  {{ item.isDemo ? $t(`pages.index.visitDemoPage`) : $t(`pages.index.visitPage`) }}
+                </div>
               </div>
-              <div><img :src="item.image" v-if="item.image" /></div>
+              <div class="item-image"><img :src="item.image" v-if="item.image" /></div>
             </li>
           </a>
         </template>
@@ -34,20 +36,26 @@ export default {
           href: "/WebApps/BeatsPerMinute/",
           icon: "/WebApps/BeatsPerMinute/icon.png",
           image: require("~/assets/screenshot/BeatsPerMinute.png"),
+          isDemo: false,
         },
         {
           id: "ShapeN",
           href: "/WebApps/ShapeN/",
           icon: "/WebApps/ShapeN/icon.png",
           image: require("~/assets/screenshot/ShapeN.png"),
+          isDemo: false,
         },
         {
           id: "RoomAvailabilityViewer",
           href: "/Room-Availability-Viewer/",
+          image: require("~/assets/screenshot/Room-Availability-Viewer.png"),
+          isDemo: true,
         },
         {
           id: "ISEIILifegame",
           href: "/ISEII-Lifegame/",
+          image: require("~/assets/screenshot/ISEII-Lifegame.png"),
+          isDemo: true,
         },
       ],
     };
@@ -70,11 +78,6 @@ header {
 
 main {
   margin: auto;
-
-  h2 {
-    font-weight: 600;
-    font-family: "Shippori Mincho", serif;
-  }
 
   @include breakpoint($max: xs) {
     width: 100%;
@@ -114,7 +117,7 @@ main {
         font-size: 14px;
       }
 
-      > div:nth-child(1) {
+      > div.item-header {
         position: relative;
         z-index: 1;
 
@@ -124,9 +127,12 @@ main {
 
           color: #f8f8f8;
           font-size: 1.5em;
+          font-weight: 600;
+          font-family: "Shippori Mincho", serif;
+          text-shadow: 0px -1px 4px #404040, 1px 0px 4px #404040, 0px 1px 4px #404040, -1px 0px 4px #404040;
         }
       }
-      > div:nth-child(2) {
+      > div.item-text {
         position: relative;
         z-index: 1;
 
@@ -134,10 +140,27 @@ main {
           margin: 0;
           padding: 0 1em 1em 1em;
 
+          text-shadow: 0px -1px 4px #404040, 1px 0px 4px #404040, 0px 1px 4px #404040, -1px 0px 4px #404040;
           color: #f8f8f8;
         }
+
+        div.item-visit-page {
+          margin: auto 1em 0 1em;
+          text-align: left;
+
+          text-shadow: 0px -1px 4px #404040, 1px 0px 4px #404040, 0px 1px 4px #404040, -1px 0px 4px #404040;
+          color: #80c0ff;
+          font-size: 1.2em;
+
+          transform: translate(0, 0);
+          transition: transform 0.2s ease-in-out;
+        }
       }
-      > div:nth-child(3) {
+      &:hover > div.item-text div.item-visit-page {
+        transform: translate(1ex, 0);
+      }
+
+      > div.item-image {
         position: absolute;
         z-index: 0;
 
