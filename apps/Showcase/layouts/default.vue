@@ -16,11 +16,11 @@ body {
 .page {
   &-enter-active,
   &-leave-active {
-    transition: opacity 0.5s;
+    // transition: opacity 0.5s;
   }
   &-enter,
   &-leave-to {
-    opacity: 0;
+    // opacity: 0;
   }
 }
 </style>
