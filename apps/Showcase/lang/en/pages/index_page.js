@@ -17,7 +17,7 @@ export default {
 
     items: {
         BeatsPerMinute: {
-            description: 'Robust BPM measuring tool against forgetting to press the beat',
+            description: 'Robust BPM measuring tool against failing to press the beat',
         },
         ShapeN: {
             description: "Output size calculation tool for convolutional neural networks",
