@@ -114,7 +114,7 @@ export default {
         },
         {
           id: "RoomAvailabilityViewer",
-          image: require("~/assets/screenshot/Room-Availability-Viewer.png"),
+          image: require("~/assets/screenshot/Room-Availability-Viewer.jpg"),
           links: [
             {
               pageType: "demonstration",
@@ -261,18 +261,18 @@ main {
         }
 
         div.item-visit-page {
-          margin: auto 1em 0 1em;
-          padding: 0.5em 0;
+          margin: auto 0 0 0;
+          padding: 0.5em 1em;
           text-align: left;
 
           text-shadow: 0px -1px 4px #404040, 1px 0px 4px #404040, 0px 1px 4px #404040, -1px 0px 4px #404040;
           color: #80c0ff;
           font-size: 1.2em;
 
-          transform: translateX(0);
-          transition: transform 0.2s ease-in-out;
+          transition: padding-left 0.2s ease-in-out;
           &:hover {
-            transform: translateX(1ex);
+            padding-left: 1.5em;
+            background-color: rgba(0, 0, 0, 0.6);
           }
 
           .item-visit-page-icon {
