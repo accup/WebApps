@@ -99,7 +99,7 @@ export default {
               href: "https://github.com/accup/WebApps",
             },
           ],
-          tags: ["NuxtJs", "PWA", "forSmartphone"],
+          tags: ["NuxtJs", "PWA"],
         },
         {
           id: "VyJit",
