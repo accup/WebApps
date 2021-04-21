@@ -120,6 +120,10 @@ export default {
               pageType: "demonstration",
               href: "/Room-Availability-Viewer/",
             },
+            {
+              pageType: "github",
+              href: "https://github.com/accup/Room-Availability-Viewer",
+            },
           ],
           tags: ["HTML5", "forSmartphone"],
         },
@@ -130,6 +134,10 @@ export default {
             {
               pageType: "demonstration",
               href: "/ISEII-Lifegame/",
+            },
+            {
+              pageType: "github",
+              href: "https://github.com/accup/ISEII-Lifegame",
             },
           ],
           tags: ["HTML5", "PHP", "forPC"],
