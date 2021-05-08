@@ -15,6 +15,7 @@ const rootPageDir = `/${env.rootDirName}/${env.appName}/`;
 
 export default {
   ssr: false,
+  target: 'static',
   /*
   ** Router configuration
   */

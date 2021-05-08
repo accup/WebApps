@@ -26,18 +26,18 @@
   },
   "homepage": "https://github.com/accup/WebApps#readme",
   "dependencies": {
-    "@nuxtjs/pwa": "^3.0.2",
+    "@nuxtjs/pwa": "^3.3.5",
     "nuxt": "^2.15.4",
-    "nuxt-i18n": "^6.15.1",
-    "vuex-persistedstate": "^3.1.0"
+    "nuxt-i18n": "^6.27.0",
+    "vuex-persistedstate": "^3.2.0"
   },
   "devDependencies": {
-    "@mdi/js": "^5.6.55",
+    "@mdi/js": "^5.9.55",
     "@nuxt/typescript-build": "^0.6.7",
-    "@nuxtjs/vuetify": "^1.11.2",
+    "@nuxtjs/vuetify": "^1.11.3",
     "inquirer": "^7.3.3",
     "push-dir": "^0.4.1",
-    "sass": "^1.32.10",
+    "sass": "^1.32.12",
     "sass-loader": "^10.1.1",
     "serve": "^11.3.2"
   }

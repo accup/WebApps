@@ -6,11 +6,11 @@
       </transition>
     </v-main>
     <v-bottom-navigation app shift grow color="blue lighten-2" background-color="transparent">
-      <v-btn nuxt :to="localePath('/')">
+      <v-btn text nuxt :to="localePath('/')">
         <span>BPM</span>
         <v-icon>{{ icons.iconBpm }}</v-icon>
       </v-btn>
-      <v-btn nuxt :to="localePath('/configure')">
+      <v-btn text nuxt :to="localePath('/configure')">
         <span>CONFIG</span>
         <v-icon>{{ icons.mdiCog }}</v-icon>
       </v-btn>
